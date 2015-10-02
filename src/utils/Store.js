@@ -25,10 +25,28 @@ class Store extends Events.EventEmitter {
   };
 
   dispatcherCallback = (action) => {
+    var scope = this;
     if (this[action.actionType]) {
-      this[action.actionType].call(this, action)
-      this.emit('change');
+      this.promiseFunction(action).then(function(response) {
+        console.log("SUCCESS")
+        scope.emit('change');
+      }, function(error) {
+          console.error("Failed!", error);
+      });
+
     }
+  }
+
+  promiseFunction = (action) => {
+    var scope = this;
+    return new Promise( function(resolve, reject) {
+      // Requires actions to return a boolean?
+      if(scope[action.actionType].call(scope, action)){
+        resolve();
+      } else {
+        reject();
+      }
+    });
   }
 }
 
