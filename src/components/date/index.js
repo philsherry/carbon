@@ -9,6 +9,10 @@ import I18n from "i18n-js";
 
 class DateComponent extends React.Component {
 
+  static defaultProps = {
+    value: moment()
+  }
+
   visibleFormat = () => {
     return I18n.t('date.formats.javascript', { defaultValue: "dd/mm/yyyy" }).toUpperCase();
   }
@@ -20,9 +24,6 @@ class DateComponent extends React.Component {
   formatValue = (val, formatFrom, formatTo) => {
     var date = moment(val, formatFrom);
     return date.format(formatTo);
-  }
-
-  formatHiddenValue = (value) => {
   }
 
   formatVisibleValue = (value) => {
@@ -91,7 +92,7 @@ class DateComponent extends React.Component {
   handleDateSelect = (val) => {
     this.closeDatePicker();
     this.emitOnChangeCallback(val);
-    this.updateVisibleValue();
+    this.updateVisibleValue(val);
   }
 
   /**
@@ -121,7 +122,7 @@ class DateComponent extends React.Component {
   }
 
   /**
-   * Prevents propagation so date picker does not close click inside the widget.
+   * Prevents propagation so date picker does not close on click inside the widget.
    *
    * @method handleWidgetClick
    */
@@ -129,8 +130,8 @@ class DateComponent extends React.Component {
     ev.nativeEvent.stopImmediatePropagation();
   }
 
-  updateVisibleValue = () => {
-    var date = this.formatVisibleValue();
+  updateVisibleValue = (val) => {
+    var date = this.formatVisibleValue(val);
     this.setState({
       visibleValue: date
     });
@@ -155,7 +156,7 @@ class DateComponent extends React.Component {
   }
 
   customInputProps = () => {
-    var inputProps = this.props.inputProps();
+    var inputProps = this.props.input.inputProps();
     inputProps.onChange = this.handleVisibleInputChange;
     inputProps.onFocus = this.openDatePicker;
     inputProps.onBlur = this.updateVisibleValue;
