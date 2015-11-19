@@ -1,109 +1,115 @@
-## :warning: This is a working document and may not reflect current best practice.
-## :warning: Carbon is still in alpha and subject to change.
-
 # Creating an App in Rails
 
 ## Introduction
 
-Carbon provides modular, reusable components written with the [React](https://facebook.github.io/react/) JavaScript library. Carbon components are platform agnostic and can be used with any backend - the only requirement is that the data passed in is in JSON format. Carbon also utilizes the [Flux](https://facebook.github.io/flux/docs/overview.html) pattern to organize data flow within the view.
+In this guide, we will walk through building a [Flux](https://facebook.github.io/flux/) driven [React](https://facebook.github.io/react/) view within a Rails application.
 
-In this guide, we will walk through building a Carbon view within a Rails application.
+We assume that you already have a Rails application, and are looking to add React views to it using Carbon.
 
-If you're familiar with ES5 JavaScript, you may find some of our syntax odd. We're not crazy, we're just using [ES6 syntax](https://babeljs.io/docs/learn-es2015/). This is transpiled into ES5 using a Babel transform for use in all browsers before compilation.
+## Setup
 
-## Building a Journals page with Carbon 
-
-### Setup
-
-* Before you begin, ensure you have followed the first time setup guide for [Carbon Factory](https://github.com/Sage/carbon-factory/wiki/First-Time-System-Setup).
+Before you begin, ensure you have followed the first time setup guide for [Carbon Factory](https://github.com/Sage/carbon-factory/blob/master/docs/first-time-installation.md).
 
 ### Create a project
 
-To begin, navigate to the directory that will house your project and run:
+To begin, navigate to the root directory of our Rails application:
+
+```
+cd ~/development/my-rails-app
+```
+
+Then lets use the Carbon command line interface to scaffold a new Carbon project:
 
 ```
 carbon app myproject
 ```
 
-This creates a directory called *myproject*. In our example, we have called the project `ui`.
+This creates the directory `myproject` within our Rails application, with everything we need to start building our React components.
 
-**Note:** To update to the latest version of Carbon, run ```npm install``` in your project root directory.
+### Configure and run gulp
 
-#### Configure and run gulp
+As we work, we can set [gulp](http://gulpjs.com/) to watch for file changes and to recompile our assets automatically. The Carbon command we previously ran setup gulp for us with some default options, but we will want to update those options specifically for our Rails application.
 
-As you work, you can set gulp to watch for changes and compile as you go.
-
-Before running gulp, you may want to specify the destination for your compiled JavaScript and CSS files. To do this, edit gulpfile.js in your project root directory:
+In order for Rails' asset pipeline to pick up the JavaScript compiled by our gulp task, we will want to specify the destination for our compiled JavaScript and CSS files. To do this, edit the `gulpfile.js` in our projects root directory:
 
 ```javascript
-// ./gulpfile.js
+// ./myproject/gulpfile.js
+var gulp = require('gulp');
+var BuildTask = require('carbon-factory/lib/gulp/build');
+var SpecTask = require('carbon-factory/lib/gulp/spec');
 
 var opts = {
-  jsDest: './../host_app/app/assets/javascripts', // the destination directory
-  cssDest: './../host_app/app/assets/stylesheets',
-  fontDest: './host_app/public/assets/fonts'
-
+  jsDest: './../app/assets/javascripts',
+  cssDest: './../app/assets/stylesheets',
+  fontDest: './../public/assets/fonts'
 };
 
 gulp.task('default', BuildTask(opts));
-
 gulp.task('test', SpecTask());
-
 ```
 
-To compile your assets and set gulp to watch for changes, run `gulp` in your project root directory.
+In this example we have provided additional options to the `BuildTask`, telling it to output the CSS and JS into the appropriate `/app/assets` directories of our Rails application where the asset pipeline can find them. We have also told it to output fonts into the `/public/assets` directory.
+
+We can now run gulp to compile our assets and watch for any file changes from the root directory of our project:
+
+```
+gulp
+```
 
 ### Rails layout
 
-To render the Carbon components in your Rails app, you need to create a layout.
+To render the components in our Rails application, we need to create a new Rails layout with the following criteria:
 
-* By default, the Carbon prepare task creates `ui.js` and `ui.css` and you need to include these in the layout.
-* You need to insert a default hook with `id='app'` - this is where your Carbon view is rendered.
-* You should assign data parsed by the Carbon Ruby presenter to the global constant APPDATA.
+* The Carbon prepare task creates `ui.js` and `ui.css` and we need to include these in the layout.
+* We need to insert a HTML `<div>` with an ID of `app` - this is where our view will be rendered.
+* We should assign the data passed down by the Rails server to a JavaScript variable in the layout called `APPDATA`.
 
 For example:
 
 ```html
-<!--app/views/layouts/carbon.html.erb-->
-
+<!-- ./app/views/layouts/carbon.html.erb -->
 <!DOCTYPE html>
 <html>
   <head>
+    <!-- including the stylesheet generated by the gulp task -->
     <%= stylesheet_link_tag "ui" %>
   </head>
-  <body>
 
-    <!--Default hook for our React components-->
+  <body>
+    <!-- HTML div to render our React components -->
     <div id='app'></div>
 
+    <!-- assigning data from an instance variable called @data to the javascript variable APPDATA -->
     <script type="text/javascript">
-
-      // We assign data parsed by the Carbon Ruby presenter to the global constant APPDATA.
-      window.APPDATA = JSON.parse('<%= @presenter.to_json.html_safe %>');
-
+      window.APPDATA = JSON.parse('<%= @data.to_json.html_safe %>');
     </script>
+
+    <!-- including the javascript file generated by the gulp task -->
     <%= javascript_include_tag "ui" %>
   </body>
 </html>
 ```
 
-### Rails route
+### Rails controller/action
 
-To render the new layout, you need to link it to a Rails controller action.
+To render the new layout, we need to tell the Rails controller action to use it.
 
-For this example, you want to render the layout when users call the `reverse` action.
+For this example, we want to render the layout when users call the `index` action of the welcome controller.
 
 Simply add `layout: 'carbon'` to the call to render:
 
 ```ruby
-# journals_controller.rb
+# welcome_controller.rb
 
- def reverse
-    journal = load_instance.reversal
-    @presenter = create_presenter(journal)
-    render :new, layout: 'carbon'
-  end
+def index
+  # for the data we will pretend we have a model called Foo, and we want to use the first entry of Foo
+  @data = Foo.first
+  # we will render the index view, with the carbon layout we created
+  render :index, layout: 'carbon'
+end
 ```
+
+We are not interested in yielding any markup from Rails here, so make sure your `index.html.erb` for this controller's view is empty.
 
 ### Creating your first view
 
