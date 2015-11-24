@@ -11,11 +11,11 @@ In this guide, we will walk through testing a simple React Component - A Button.
 
 ## Setup
 
-Carbon uses the [JasmineNOLINK]() testing framework together with [karmaNOLINK]() which allows you to run your tests within a real browser enviroment. Code coverage is tracked using [IstanbulNOLINK](). If you would like to learn more about our testing set up you can view the karma config file [hereNOLINK]()
+Carbon uses the [Jasmine](http://jasmine.github.io/) testing framework together with [Karma](http://karma-runner.github.io/0.13/index.html) which allows you to run your tests within a real browser environment. Code coverage is tracked using [Istanbul](https://github.com/gotwarlost/istanbul). If you would like to learn more about our testing set up you can view the karma config file and the spec setup file [here](https://github.com/Sage/carbon-factory/tree/master/src/gulp).
 
 ## The Component
 
-Follow creating-a-component
+By following the `creating-a-component` guide you should of created a button component that looks similar to the following:
 
 Final Button
 
@@ -82,7 +82,7 @@ describe('Button', () => {
 
 The generated code has 3 import statements.
 * React - Familiar React Stuff
-* ReactTestUtils - [ReactTestUtilsNOLINK]()
+* ReactTestUtils - [ReactTestUtils](https://facebook.github.io/react/docs/test-utils.html)
 * Button - The component file we are describing
 
 The second part of the generated code should be familiar to anyone who has used the jasmine testing framework before and should be fairly self explanatory.
@@ -90,7 +90,7 @@ The second part of the generated code should be familiar to anyone who has used 
 ## Running the specs
 Within your working directory running the command:
 
-```
+```sh
 gulp test
 ```
 
@@ -98,7 +98,7 @@ This command will run all specs within the current project. This command only ne
 
 The result of `gulp test`:
 
-```
+```sh
 PhantomJS 1.9.8 (Mac OS X 0.0.0) Button failing test demo FAILED
 	Expected 1 to equal 2.
   at browserify <- /path/carbon/src/components/button/__spec__.js:7:4
@@ -113,10 +113,10 @@ Lets fix that spec. Change the expect statement so that we expect 1 to equal 1 a
 Carbons `gulp test` can be passed a number of different options.
 
 #### Coverage
-Running the command `gulp test --coverage` will run the full suite of specs and also generate a cover report using [istanbulNOLINK](). This command will continue to listen to any changes re-running the specs and re-generating the coverage report.
+Running the command `gulp test --coverage` will run the full suite of specs and also generate a cover report using [istanbul](https://github.com/gotwarlost/istanbul). This command will continue to listen to any changes re-running the specs and re-generating the coverage report.
 
 This will appear in your console in the form of
-```
+```sh
 =============================== Coverage summary ===============================
 Statements   : 95.99% ( 2060/2146 ), 342 ignored
 Branches     : 94.75% ( 975/1029 ), 319 ignored
@@ -127,7 +127,7 @@ Lines        : 92.77% ( 1104/1190 )
 
 To get a more detailed look at the coverage including inspection of individual files you can open up the generated coverage document using the command
 
-```
+```sh
 open coverage/PhantomJS\ 1.9.8\ \(Mac\ OS\ X\ 0.0.0\)/index.html
 ```
 
@@ -141,6 +141,19 @@ Running the command `gulp test --build` will run the suite of tests once and gen
 #### Browsers
 Running the command `gulp test -b chrome` will open up a chrome browser and run the test suite within it. The browser option can be changed to 'firefox', 'safari' or 'phantomjs'. The last of which being the default browser that is run with gulp test.
 
-The advantage of running the tests within an actual browser is that you can insert debugger statements into your code. Open up the browsers dev tools and step through your tests or code
+The advantage of running the tests within an actual browser is that you can insert debugger statements into your code. Open up the browsers dev tools and step through your tests or code.
+
+### Running single tests and files
+
+```javascript
+fdescribe("when ...", function () { // to [f]ocus on a single group of tests
+  fit("should ...", function () {...}); // to [f]ocus on a single test case
+});
+... and:
+
+xdescribe("when ...", function () { // to e[x]clude a group of tests
+  xit("should ...", function () {...}); // to e[x]clude a test case
+});
+```
 
 ## On with the tests
