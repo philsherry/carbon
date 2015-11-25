@@ -157,3 +157,148 @@ xdescribe("when ...", function () { // to e[x]clude a group of tests
 ```
 
 ## On with the tests
+
+There are a few different ways of testing react components and for each component we want to make sure we are testing the rendered tree structure based on different props and state as well as the behaviour of our components by simulating events and updates. If you would like to read about different methods for testing react components you can read about them [here](http://reactkungfu.com/2015/07/approaches-to-testing-react-components-an-overview/).
+
+The button test will utilise the renderIntoDocument method provided by Reacts TestUtils. This method allow us to test our components against a actual DOM.
+
+
+Lets start writing our tests. Within the describe button block we want to render a basic button before each test is run. Set up a beforeEach block and use the renderIntoDocument function to render a button.
+
+```javascript
+import React from 'react';
+import TestUtils from 'react/lib/ReactTestUtils';
+import Button from './index';
+
+describe('Button', () => {
+  let basic_button;
+
+  beforeEach((), => {
+    basic_button = TestUtils.renderIntoDocument(
+      <Button/>
+    );
+  }
+
+  it('failing test demo', () => {
+    expect(1).toEqual(2);
+  });
+});
+```
+
+We can now use the basic_button instance to access the rendered button component. Including its props and refs.
+Firstly we want to check that a basic_button comes with some set defaults such as the type or `as` property is set to 'secondary', the `children` property is set to 'Click Me' and that it is not disabled.
+
+Lets create a nested describe and it block to test the defaults of the basic_button.
+
+```javascript
+// ...imports
+describe('Button', () => {
+  let basic_button;
+
+  beforeEach((), => {
+    basic_button = TestUtils.renderIntoDocument(
+      <Button/>
+    );
+  }
+
+  describe('A basic button', () => {
+    it('renders a button with defaults', () => {
+      expect(basic_button.props.as).toEqual('secondary');
+      expect(basic_button.props.children).toEqual('Click Me');
+      expect(basic_button.props.disabled).toEqual(false);
+    });
+  });
+});
+```
+
+We can now run `gulp test` and check that the specs are passing.
+
+As well as checking that the defaultProps get applied correctly to the button we also want to check that passed properties are applied to the button. Lets create three more buttons in our beforeEach.
+* Primary
+* Secondary
+* Disabled
+
+```javascript
+// ...imports
+// ..describe
+let basic_button;
+let primary_button;
+let secondary_button;
+let disabled_button;
+
+beforeEach((), => {
+  basic_button = TestUtils.renderIntoDocument(
+    <Button/>
+  );
+
+  primary_button = TestUtils.renderIntoDocument(
+    <Button
+      name="Primary Button"
+      as="primary"
+      onClick={ spy }
+      >Primary</Button>
+  );
+
+  secondary_button = TestUtils.renderIntoDocument(
+    <Button
+      name="Secondary Button"
+      className="customClass"
+      >Secondary</Button>
+  );
+
+  disabled_button = TestUtils.renderIntoDocument(
+    <Button
+      name="Disabled Button"
+      disabled={ true }
+      >Disabled</Button>
+  );
+}
+```
+
+We can now add three more describe blocks to our tests.
+
+```javascript
+describe('A basic button', () => {
+  it('renders a button with defaults', () => {
+    expect(basic_button.props.as).toEqual('secondary');
+    expect(basic_button.props.children).toEqual('Click Me');
+    expect(basic_button.props.disabled).toEqual(false);
+  });
+});
+
+describe('A primary button', () => {
+  it('renders a primary button', () => {
+    expect(primary_button.props.name).toEqual('Primary Button');
+    expect(primary_button.props.as).toEqual('primary');
+    expect(primary_button.props.children).toEqual('Primary');
+    expect(primary_button.props.disabled).toEqual(false);
+  });
+});
+
+describe('A secondary button', () => {
+  it('renders a secondary button', () => {
+    expect(secondary_button.props.name).toEqual('Secondary Button');
+    expect(secondary_button.props.as).toEqual('secondary');
+    expect(secondary_button.props.children).toEqual('Secondary');
+    expect(secondary_button.props.disabled).toEqual(false);
+  });
+});
+
+describe('A disabled button', () => {
+  it('renders a disabled button', () => {
+    expect(disabled_button.props.name).toEqual('Disabled Button');
+    expect(disabled_button.props.as).toEqual('secondary');
+    expect(disabled_button.props.children).toEqual('Disabled');
+    expect(disabled_button.props.disabled).toEqual(true);
+  });
+});
+```
+
+As well as the defaults of the button we also want to check the rendered button contains the appropriate class names that will allow the button styling to be applied. Create a new describe block that will cover the class logic within the render method. For these test we will use another test utility provided by react. The utility is provided by ReactDOM instead of test utils and therefore requires a new import statement.
+
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+import TestUtils from 'react/lib/ReactTestUtils';
+import Button from './index';
+```
