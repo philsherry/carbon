@@ -235,7 +235,6 @@ beforeEach((), => {
     <Button
       name="Primary Button"
       as="primary"
-      onClick={ spy }
       >Primary</Button>
   );
 
@@ -301,4 +300,267 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react/lib/ReactTestUtils';
 import Button from './index';
+```
+
+This import gives us access to findDOMNode which takes a React Component such as basic_button and returns the DOM element that it represents. For example:
+
+```javascript
+let basic_button_DOM = ReactDOM.findDOMNode(basic_button)
+```
+
+will return:
+
+```html
+<button class="ui-button ui-button--secondary" data-reactid=".h">Click Me</button>
+```
+
+Using the HTML DOM element we can check that our buttons have the correct class names as well as other properties.
+
+We want to test that:
+* Every button has a class of `ui-button`
+* A primary button has a class of `ui-button--primary`
+* A secondary button has a class of `ui-button--secondary`
+* A disabled button has a class of `ui-button--disabled`
+
+Lets set up a the scaffolding for these tests.
+
+```javascript
+describe('Class names', () => {
+  let basicDOM;
+  let primaryDOM;
+  let secondaryDOM;
+  let disabledDOM;
+
+  beforeEach(() => {
+    basic = ReactDOM.findDOMNode(defaultButton)
+    primaryDOM = ReactDOM.findDOMNode(primary)
+    secondaryDOM = ReactDOM.findDOMNode(secondary)
+    disabledDOM = ReactDOM.findDOMNode(disabled)
+  });
+
+  it('adds a className of ui-button to all buttons', () => {
+
+  });
+
+  it('adds a secondary class depending on its type', () => {
+
+  });
+
+  it('adds a disabled class if the button is disabled', () => {
+
+  });
+});
+```
+
+```javascript
+it('adds a className of ui-button to all buttons', () => {
+  expect(basicDOM.classList[0]).toEqual('ui-button')
+  expect(primaryDOM.classList[0]).toEqual('ui-button')
+  expect(secondaryDOM.classList[0]).toEqual('ui-button')
+  expect(disabledDOM.classList[0]).toEqual('ui-button')
+});
+```
+
+```javascript
+it('adds a secondary class depending on its type', () => {
+  expect(primaryDOM.classList[1]).toEqual('ui-button--primary')
+  expect(secondaryDOM.classList[1]).toEqual('ui-button--secondary')
+});
+```
+```javascript
+it('adds a disabled class if the button is disabled', () => {
+  expect(disabledDOM.classList[2]).toEqual('ui-button--disabled')
+  expect(defaultDOM.classList[2]).toBeFalsy();
+});
+```
+
+### Testing behaviour
+As well as the rendered structure of the button we also need to test its behaviour. The primary action that the button should respond to is an onClick event and that when a custom onClick event is passed to the component it should be called correctly.
+
+Lets set up the custom spy function. At the top of page where the buttons were declared create a jasmine spy called spy.
+
+```javascript
+describe('Button', () => {
+  let defaultButton;
+  let primary;
+  let secondary;
+  let disabled;
+  let spy = jasmine.createSpy('spy')
+```
+
+```javascript
+Then pass an onClick prop to the primary button when it instantiates.
+
+beforeEach((), => {
+  basic_button = TestUtils.renderIntoDocument(
+    <Button/>
+  );
+
+  primary_button = TestUtils.renderIntoDocument(
+    <Button
+      name="Primary Button"
+      as="primary"
+      onClick={ spy }
+      >Primary</Button>
+  );
+```
+
+Now we can set up our final test.
+
+```javascript
+describe('Passing a custom onClick', () => {
+  let primaryDOM;
+
+  beforeEach(() => {
+    primaryDOM = ReactDOM.findDOMNode(primary)
+  });
+
+  it('triggers when the button is clicked', () => {
+
+  });
+});
+```
+
+For the test we want to be able to trigger the event. Reacts test utils contains a `Simulate` method that can be used to for all events that React itself understands such as `click`, `keydown`, `change` etc... all of which should be familiar. We will use the the extracted `primaryDOM` element as the target for the click and this will simulate a real browser event.
+
+```javascript
+describe('Passing a custom onClick', () => {
+  let primaryDOM;
+
+  beforeEach(() => {
+    primaryDOM = ReactDOM.findDOMNode(primary)
+  });
+
+  it('triggers when the button is clicked', () => {
+    TestUtils.Simulate.click(primaryDOM);
+    expect(spy).toHaveBeenCalled();
+  });
+});
+```
+
+## Final Code
+
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+import TestUtils from 'react/lib/ReactTestUtils';
+import Button from './index';
+
+let basic_button;
+let primary_button;
+let secondary_button;
+let disabled_button;
+let spy = jasmine.createSpy('spy')
+
+describe('Button', () => {
+  let basic_button;
+
+  beforeEach((), => {
+    basic_button = TestUtils.renderIntoDocument(
+      <Button/>
+    );
+
+    primary_button = TestUtils.renderIntoDocument(
+      <Button
+        name="Primary Button"
+        as="primary"
+        onClick={ spy }
+        >Primary</Button>
+    );
+
+    secondary_button = TestUtils.renderIntoDocument(
+      <Button
+        name="Secondary Button"
+        className="customClass"
+        >Secondary</Button>
+    );
+
+    disabled_button = TestUtils.renderIntoDocument(
+      <Button
+        name="Disabled Button"
+        disabled={ true }
+        >Disabled</Button>
+    );
+  });
+
+  describe('A basic button', () => {
+    it('renders a button with defaults', () => {
+      expect(basic_button.props.as).toEqual('secondary');
+      expect(basic_button.props.children).toEqual('Click Me');
+      expect(basic_button.props.disabled).toEqual(false);
+    });
+  });
+
+  describe('A primary button', () => {
+    it('renders a primary button', () => {
+      expect(primary_button.props.name).toEqual('Primary Button');
+      expect(primary_button.props.as).toEqual('primary');
+      expect(primary_button.props.children).toEqual('Primary');
+      expect(primary_button.props.disabled).toEqual(false);
+    });
+  });
+
+  describe('A secondary button', () => {
+    it('renders a secondary button', () => {
+      expect(secondary_button.props.name).toEqual('Secondary Button');
+      expect(secondary_button.props.as).toEqual('secondary');
+      expect(secondary_button.props.children).toEqual('Secondary');
+      expect(secondary_button.props.disabled).toEqual(false);
+    });
+  });
+
+  describe('A disabled button', () => {
+    it('renders a disabled button', () => {
+      expect(disabled_button.props.name).toEqual('Disabled Button');
+      expect(disabled_button.props.as).toEqual('secondary');
+      expect(disabled_button.props.children).toEqual('Disabled');
+      expect(disabled_button.props.disabled).toEqual(true);
+    });
+  });
+
+  describe('Class names', () => {
+    let basicDOM;
+    let primaryDOM;
+    let secondaryDOM;
+    let disabledDOM;
+
+    beforeEach(() => {
+      basic = ReactDOM.findDOMNode(defaultButton)
+      primaryDOM = ReactDOM.findDOMNode(primary)
+      secondaryDOM = ReactDOM.findDOMNode(secondary)
+      disabledDOM = ReactDOM.findDOMNode(disabled)
+    });
+
+    it('adds a className of ui-button to all buttons', () => {
+      expect(basicDOM.classList[0]).toEqual('ui-button')
+      expect(primaryDOM.classList[0]).toEqual('ui-button')
+      expect(secondaryDOM.classList[0]).toEqual('ui-button')
+      expect(disabledDOM.classList[0]).toEqual('ui-button')
+    });
+
+    it('adds a secondary class depending on its type', () => {
+      expect(primaryDOM.classList[1]).toEqual('ui-button--primary')
+      expect(secondaryDOM.classList[1]).toEqual('ui-button--secondary')
+    });
+
+
+    it('adds a disabled class if the button is disabled', () => {
+      expect(disabledDOM.classList[2]).toEqual('ui-button--disabled')
+      expect(defaultDOM.classList[2]).toBeFalsy();
+    });
+  });
+
+  describe('Passing a custom onClick', () => {
+    let primaryDOM;
+
+    beforeEach(() => {
+      primaryDOM = ReactDOM.findDOMNode(primary)
+    });
+
+    it('triggers when the button is clicked', () => {
+      TestUtils.Simulate.click(primaryDOM);
+      expect(spy).toHaveBeenCalled();
+    });
+  });
+});
 ```
