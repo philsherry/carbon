@@ -16,26 +16,6 @@ class LineGraph extends React.Component {
   }
 }
 
-/**
- * Uses the Highcharts API to apply z-index to the current segment.
- *
- * @method focusSegment
- * @private
- */
-function focusSegment() {
-  this.graphic.zIndexSetter(1);
-}
-
-/**
- * Uses the Highcharts API to apply z-index to the current segment.
- *
- * @method unfocusSegment
- * @private
- */
-function unfocusSegment() {
-  this.graphic.zIndexSetter(0);
-}
-
 function xAxis(xAxisTitle, xAxisCategories) {
   let xAxis = {};
 
@@ -64,18 +44,8 @@ function yAxis(yAxisTitle) {
   return yAxis;
 }
 
-/**
- * Generates the config for the Highchart.
- *
- * @method generateConfig
- * @param {Object} immutableData
- * @param {String} title
- * @private
- * @return {Object}
- */
 function generateConfig(immutableData, title, yAxisTitle, xAxisTitle, xAxisCategories) {
   let data = immutableData.toJS();
-  debugger
 
   return {
     credits: {
@@ -91,29 +61,12 @@ function generateConfig(immutableData, title, yAxisTitle, xAxisTitle, xAxisCateg
       useHTML: true,
     },
     lineColor: "#999",
-    xAxis: xAxis(xAxisTitle, xAxisCategories),
+    xAxis: xAxis(xAxisTitle, data.xAxis),
     yAxis: yAxis(yAxisTitle),
     legend: { enabled: false },
     series: [{
-      data: data
-    }],
-    plotOptions: {
-      area: {
-        marker: {
-          enabled: false,
-          radius: 1
-        },
-        states: {
-          hover: {
-            enabled: false
-          }
-        },
-        shadow: false,
-        lineColor: "#D37423",
-        fillColor: "rgba(211,116,35,0.2)",
-        lineWidth: 2
-      }
-    }
+      data: data.yAxis
+    }]
   };
 }
 
