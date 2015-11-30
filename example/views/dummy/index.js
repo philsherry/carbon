@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js';
 import { connect } from 'utils/flux';
 import Form from 'components/form';
 import Button from 'components/button';
+import LineGraph from 'components/line-graph';
 
 import FinancesStore from './../../stores/finances';
 import UserActions from './../../actions/user';
@@ -24,6 +25,7 @@ class Finances extends React.Component {
 
     return (
       <div className="view-finances">
+        <LineGraph xAxisCategories={['Credit', 'Discount', 'Debit']} title='Line Graph' data= { this.state.financesStore.get('chart_data') } />
         <FinancesHistory />
 
         <Button onClick={ this.handleOnClick }>Edit My Details</Button>
@@ -50,6 +52,7 @@ class Finances extends React.Component {
         </Form>
 
         <UserDialog />
+
       </div>
     );
   }

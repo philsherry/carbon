@@ -5,11 +5,25 @@ import Immutable from 'immutable';
 import ImmutableHelper from 'utils/helpers/immutable';
 import BigNumber from 'bignumber.js';
 
+
+let date = new Date();
 // Hard code some initial data for the store
 const data = ImmutableHelper.parseJSON({
   date_from: "2015-11-01",
   name: "My Finances",
   discount: false,
+  line_graph_data: {
+    xAxis: [
+      date.getDate() - 2,
+      date.getDate() - 1,
+      date.getDate(),
+      date.getDate() + 1,
+      date.getDate() + 2
+    ],
+    yAxis: [ 
+      20, 30, 40, 0, -5
+    ]
+  },
   chart_data: [
     {
       y: 0,

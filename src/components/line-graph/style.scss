@@ -1,0 +1,13 @@
+@import 'general';
+@import 'colors';
+
+.ui-line-graph {
+  .highcharts-title {
+    color: $grey-dark;
+    font-family: $app-font-family;
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 16px;
+    text-align: center;
+  }
+}
