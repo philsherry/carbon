@@ -126,8 +126,9 @@ class Dropdown extends React.Component {
    * @method handleBlur
    */
   handleBlur = () => {
+    console.log('BLURRY')
     if (!this.blockBlur) {
-      this.setState({ filter: ''});
+      this.setState({ filter: null });
     }
   }
 
@@ -140,7 +141,7 @@ class Dropdown extends React.Component {
   handleSelect = (ev) => {
     this.blockBlur = false;
     this.emitOnChangeCallback(ev.currentTarget.getAttribute('value'));
-    this.setState({ filter: ''});
+    this.setState({ filter: null });
   }
 
   /*
@@ -150,6 +151,7 @@ class Dropdown extends React.Component {
    * @param {Object} ev event
    */
   handleVisibleChange = (ev) => {
+    console.log(this.state.filter);
     let value = ev.target.value;
     this.setState({ filter: value });
   }
@@ -197,9 +199,11 @@ class Dropdown extends React.Component {
     middle = optionText.substr(valIndex, value.length);
     end = optionText.substr(valIndex + value.length, optionText.length);
 
+    // find end of string recursively
     if (end.indexOf(value) !== -1) {
       end = this.highlightMatches(end, value);
     }
+
     // build JSX object
     newValue = [<span   key="beginning">{ beginning }</span>,
                 <strong key="middle"><u>{ middle }</u></strong>,
@@ -217,12 +221,11 @@ class Dropdown extends React.Component {
   prepareList = (options) => {
     let _options = options.toJS();
 
-    if (this.state.filter.length){
+    if (this.state.filter){
       let filter = this.state.filter;
       let regex = new RegExp(filter, 'i');
-
       // if user has entered a search filter
-      if(filter.length) {
+      if(filter) {
         _options = _options.filter((option) => {
           if (option.name.search(regex) > -1) {
             option.name = this.highlightMatches(option.name, this.state.filter);
@@ -231,8 +234,16 @@ class Dropdown extends React.Component {
         });
       }
     }
-   
     return _options;
+  }
+
+  get visibleValue() {
+    if (this.state.filter === null) {
+      return this.nameByID(this.props.value)
+    }
+    else if (this.state.filter === undefined) {
+      return '';
+    }
   }
 
   /**
@@ -244,7 +255,7 @@ class Dropdown extends React.Component {
   get inputProps() {
     let { ...props } = this.props;
     props.className = this.inputClasses;
-    props.value = this.state.filter.length ? this.state.filter : this.nameByID(this.props.value);
+    props.value = this.visibleValue
     props.name = null;
     props.onChange = this.handleVisibleChange;
     props.onBlur = this.handleBlur;
@@ -298,7 +309,7 @@ class Dropdown extends React.Component {
    * @method inputClasses
    */
   get inputClasses() {
-    let inputClasses = `${this.rootClass}__input` + (this.state.filter.length ? ` ${this.rootClass}__input--filter` : '');
+    let inputClasses = `${this.rootClass}__input` + (this.state.filter ? ` ${this.rootClass}__input--filter` : '');
     return inputClasses;
   }
 
