@@ -3,6 +3,32 @@ import ReactHighcharts from 'react-highcharts/dist/bundle/highcharts';
 
 class LineGraph extends React.Component {
 
+  /**
+   * Always returns false, but uses the Highcharts API to update the charts
+   * data or title if they have been updated.
+   *
+   * @method shouldComponentUpdate
+   * @param {Object} nextProps
+   */
+  shouldComponentUpdate(nextProps) {
+    let chart = this.refs.chart.chart;
+
+    // use the highchart api to update its data
+    if (this.props.data !== nextProps.data) {
+      let data = nextProps.data.get('yAxis')
+      data.forEach(function(series, index) {
+        if (chart.series[index]) {
+          chart.series[index].setData(data.getIn([index, 'data']).toJS());
+        } else {
+          chart.addSeries(data.getIn([index, 'data']).toJS())
+        }
+      })
+    }
+
+    // never re-render the component
+    return false;
+  }
+
   render() {
     let config = generateConfig(this.props.data, this.props.title,
                 this.props.yAxisTitle, this.props.xAxisTitle,
@@ -64,9 +90,7 @@ function generateConfig(immutableData, title, yAxisTitle, xAxisTitle, xAxisCateg
     xAxis: xAxis(xAxisTitle, data.xAxis),
     yAxis: yAxis(yAxisTitle),
     legend: { enabled: false },
-    series: [{
-      data: data.yAxis
-    }]
+    series: data.yAxis
   };
 }
 

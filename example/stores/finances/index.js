@@ -5,25 +5,12 @@ import Immutable from 'immutable';
 import ImmutableHelper from 'utils/helpers/immutable';
 import BigNumber from 'bignumber.js';
 
-
 let date = new Date();
 // Hard code some initial data for the store
 const data = ImmutableHelper.parseJSON({
   date_from: "2015-11-01",
   name: "My Finances",
   discount: false,
-  line_graph_data: {
-    xAxis: [
-      date.getDate() - 2,
-      date.getDate() - 1,
-      date.getDate(),
-      date.getDate() + 1,
-      date.getDate() + 2
-    ],
-    yAxis: [ 
-      20, 30, 40, 0, -5
-    ]
-  },
   chart_data: [
     {
       y: 0,
@@ -60,10 +47,62 @@ const data = ImmutableHelper.parseJSON({
       credit: "2.00",
       total: "-81.21"
     }
+  ],
+  line_graph_data: {
+    xAxis: [
+      date.getDate() - 2,
+      date.getDate() - 1,
+      date.getDate(),
+      date.getDate() + 1,
+      date.getDate() + 2
+    ],
+    yAxis: [
+      { name: 'line1', data: [10, 20, 30, 40, 50] },
+      { name: 'line2', data: [50, 40, 30, 20, 10] }
+    ]
+  },
+  line_graph_items: [
+    {
+      point1: 10,
+      point2: 20,
+      point3: 30,
+      point4: 40,
+      point5: 50
+    },
+    {
+      point1: 50,
+      point2: 40,
+      point3: 30,
+      point4: 20,
+      point5: 10
+    }
   ]
 });
 
 class FinancesStore extends Store {
+
+  [FinancesConstants.FINANCES_LINE_GRAPH_GRID_UPDATED](action) {
+    // update this value in the store
+    this.data = ImmutableHelper.updateLineItem([this.data, 'line_graph_items', action.row_id, action.name], Number(action.value));
+
+    let index = 0;
+    let scope = this
+    console.log("BEFORE", this.data.getIn(['line_graph_data', 'yAxis']).toJS());
+    this.data.get('line_graph_items').forEach(function(item) { 
+       let chart_line = [];
+       item.forEach(function(value, key) { 
+         if (key != '_row_id') {
+           chart_line.push(value)
+         }
+       })
+       scope.data = scope.data.setIn(['line_graph_data', 'yAxis', index, 'data'], ImmutableHelper.parseJSON(chart_line));
+       index++;
+     }) 
+    console.log("After", this.data.getIn(['line_graph_data', 'yAxis']).toJS());
+  }
+
+
+
   constructor(name, data, Dispatcher, opts = {}) {
     super(name, data, Dispatcher, opts);
 
@@ -78,6 +117,10 @@ class FinancesStore extends Store {
   /**
    * Subscribe this store to the following actions...
    */
+
+  [FinancesConstants.FINANCES_CHART_UPDATED](action) {
+    this.data = this.data.setIn(['line_graph_data', 'yAxis', Number(action.name[action.name.length - 1])], Number(action.value));
+  }
 
   [FinancesConstants.FINANCES_VALUE_UPDATED](action) {
     // update this value in the store
