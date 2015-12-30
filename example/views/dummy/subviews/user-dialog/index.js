@@ -6,6 +6,7 @@ import Form from 'components/form';
 import Textbox from 'components/textbox';
 import Date from 'components/date';
 import Textarea from 'components/textarea';
+import Sortcode from 'components/sortcode';
 import UserActions from './../../../../actions/user';
 import UserStore from './../../../../stores/user';
 
@@ -36,6 +37,8 @@ class UserDialog extends React.Component {
               rows="4"
               onChange={ UserActions.userValueUpdated }
               value={ this.state.userStore.get('address') } />
+
+            <Sortcode name='sortcode'/>
           </Row>
         </Form>
 

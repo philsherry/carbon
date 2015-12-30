@@ -1,0 +1,5 @@
+{
+  "main": "./sortcode",
+  "name": "Sortcode",
+  "style": "sortcode.scss"
+}
