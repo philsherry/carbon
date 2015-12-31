@@ -38,7 +38,7 @@ class UserDialog extends React.Component {
               onChange={ UserActions.userValueUpdated }
               value={ this.state.userStore.get('address') } />
 
-            <Sortcode name='sortcode'/>
+            <Sortcode name='sortcode' onChange={ UserActions.userValueUpdated }/>
           </Row>
         </Form>
 

@@ -24,7 +24,10 @@ const Sortcode = Input(InputLabel(InputValidation(
 class Sortcode extends React.Component {
 
   state = {
-    formattedValue: null
+    formattedValue: null,
+    value1: null,
+    value2: null,
+    value3: null
   }
 
   /**
@@ -46,6 +49,34 @@ class Sortcode extends React.Component {
   }
 
   /**
+   * Callback to update the hidden field on change.
+   *
+   * @method emitOnChangeCallback
+   * @param {String} val The unformatted decimal value
+   */
+  emitOnChangeCallback = (val) => {
+    let hiddenField = this.refs.hidden;
+    hiddenField.value = val;
+
+    this._handleOnChange({ target: hiddenField });
+  }
+
+  formatHiddenValue = (ev) => {
+    debugger
+  }
+
+  /**
+   * Handles Change to visible field
+   *
+   * @method handleVisibleInputChange
+   * @param {Object} ev event
+   */
+  handleVisibleInputChange = (ev) => {
+    this.setState({ visibleValue: ev.target.value });
+    this.emitOnChangeCallback(this.formatHiddenValue(ev));
+  }
+
+  /**
    * A getter that combines props passed down from the input decorator with
    * sortcode specific props.
    *
@@ -53,10 +84,10 @@ class Sortcode extends React.Component {
    */
   get inputProps() {
     let { ...props } = this.props;
+    props.onChange = this.handleVisibleInputChange;
     props.className = this.inputClasses;
-    props.value = this.formattedValue;
-    props.maxLength = '2';
-
+    props.id = this.props.fieldId;
+    debugger
     return props;
   }
 
@@ -70,7 +101,7 @@ class Sortcode extends React.Component {
       ref: "hidden",
       type: "hidden",
       readOnly: true,
-      value: this.props.value
+      value: this.formattedHiddenValue
 
     };
     return props;
@@ -89,21 +120,21 @@ class Sortcode extends React.Component {
         { this.labelHTML }
         <input { ...this.hiddenInputProps } />
 
-        <div className='field1'>
+        <div value={ this.state.value1 } fieldId='1'>
           { this.inputHTML }
           { this.validationHTML }
         </div>
 
         <span> - </span>
 
-        <div className='field2'>
+        <div value={ this.state.value2 } fieldId='2'>
           { this.inputHTML }
           { this.validationHTML }
         </div>
 
         <span> - </span>
 
-        <div className='field3  '>
+        <div value={ this.state.value3 } fieldId='3'>
           { this.inputHTML }
           { this.validationHTML }
         </div>
