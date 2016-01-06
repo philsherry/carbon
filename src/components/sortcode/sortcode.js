@@ -1,8 +1,6 @@
 import React from 'react';
-import Input from './../../utils/decorators/input';
-import InputLabel from './../../utils/decorators/input-label';
-import InputValidation from './../../utils/decorators/input-validation';
-
+import Row from 'components/row';
+import Number from 'components/number';
 /**
  * A Sortcode widget.
  *
@@ -20,15 +18,71 @@ import InputValidation from './../../utils/decorators/input-validation';
  * @constructor
  * @decorators {Input,InputLabel,InputValidation}
  */
-const Sortcode = Input(InputLabel(InputValidation(
 class Sortcode extends React.Component {
 
-  state = {
-    formattedValue: null,
-    value1: null,
-    value2: null,
-    value3: null
-  }
+  /**
+    * Stores the document - allows us to override it different contexts, such as
+    * when running tests.
+    *
+    * @property _document
+    * @type {document}
+    */
+   _document = document;
+
+
+   state = {
+     sortCode1: { value: null },
+     sortCode2: { value: null },
+     sortCode3: { value: null }
+   }
+
+  /**
+  * Determine if sort code inputs need to be validated.
+  *
+  * @method checkSortCode
+  * @return {Void}
+  */
+  checkSortCode = () => {
+   setTimeout(() => {
+     let focusedElement = this._document.activeElement,
+         focusedElementName = focusedElement.name,
+         focusOnSortCodeInputs = (focusedElementName) && (focusedElementName.indexOf(this.props.name) !== -1);
+
+     if (!focusOnSortCodeInputs) {
+       debugger
+     }
+   }, 0);
+  };
+
+  /**
+   * Validates sort code inputs.
+   *
+   * @method validateSortCode
+   */
+  validateSortCode = () => {
+    // if the hidden input is a valid sort code
+    let valid = this.sortCodeHidden.validate();
+    let errorMessage = valid ? null : this.sortCodeHidden.state.errorMessage;
+    // if valid, reset error states for sort code inputs; otherwise, set error states/message for sort code inputs.
+    this.sortCode1.setState({ errorMessage: null, valid: valid });
+    this.sortCode2.setState({ errorMessage: null, valid: valid });
+    this.sortCode3.setState({ errorMessage: errorMessage, valid: valid });
+  };
+
+  /**
+   * On key down of any sort code input, reset the validation for sort code.
+   *
+   * @method handleSortCodeKeyDown
+   * @param {Object} ev event
+   */
+  handleSortCodeKeyDown = (ev) => {
+    // prevent entering dash key code
+    if(ev.which === 189) {
+      ev.preventDefault();
+    } else {
+      this.setState({ errorMessage: null, valid: true });
+    }
+  };
 
   /**
    * Main Class getter
@@ -36,7 +90,13 @@ class Sortcode extends React.Component {
    * @method mainClasses Main Class getter
    */
   get mainClasses() {
-    return 'ui-sortcode';
+    let classes = "ui-sortcode";
+
+    if (this.props.className) {
+      classes += ` ${this.props.className}`;
+    }
+
+    return classes;
   }
 
   /**
@@ -61,20 +121,21 @@ class Sortcode extends React.Component {
     this._handleOnChange({ target: hiddenField });
   }
 
-  formatHiddenValue = (ev) => {
+  formatVisibleValue = (ev) => {
     debugger
   }
 
-  /**
-   * Handles Change to visible field
-   *
-   * @method handleVisibleInputChange
-   * @param {Object} ev event
-   */
-  handleVisibleInputChange = (ev) => {
-    this.setState({ visibleValue: ev.target.value });
-    this.emitOnChangeCallback(this.formatHiddenValue(ev));
-  }
+  // /**
+  //  * Handles Change to visible field
+  //  *
+  //  * @method handleVisibleInputChange
+  //  * @param {Object} ev event
+  //  */
+  // handleVisibleInputChange = (ev) => {
+  //
+  //   this.setState({ visibleValue: ev.target.value });
+  //   // this.emitOnChangeCallback(this.formatHiddenValue(ev));
+  // }
 
   /**
    * A getter that combines props passed down from the input decorator with
@@ -84,10 +145,15 @@ class Sortcode extends React.Component {
    */
   get inputProps() {
     let { ...props } = this.props;
-    props.onChange = this.handleVisibleInputChange;
+
+    props.columnSpan = '1';
+    props.label = false;
+    props.maxLength = '2';
+    // props.onChange = this.handleVisibleInputChange;
     props.className = this.inputClasses;
-    props.id = this.props.fieldId;
-    debugger
+    props.onBlur = this.checkSortCode;
+    props.onKeyDown = this.handleSortCodeKeyDown;
+
     return props;
   }
 
@@ -97,13 +163,14 @@ class Sortcode extends React.Component {
    * @method hiddenInputProps
    */
   get hiddenInputProps() {
-    var props = {
-      ref: "hidden",
+    let props = {
+      className: 'ui-sort-code__input--hidden',
       type: "hidden",
       readOnly: true,
-      value: this.formattedHiddenValue
-
+      maxLength: '6'
+      // value: this.formattedHiddenValue
     };
+
     return props;
   }
 
@@ -114,35 +181,49 @@ class Sortcode extends React.Component {
    * @method render
    */
   render() {
+    let sortCodeName  = 'sortCode',
+        sortCodeName1 = sortCodeName + '1',
+        sortCodeName2 = sortCodeName + '2',
+        sortCodeName3 = sortCodeName + '3';
+
     return (
-      <div className={ this.mainClasses }>
+       <div className={ this.mainClasses }>
+         <Number
+             name={ sortCodeName }
+             ref={ (elem) => this.sortCodeHidden = elem }
+             { ...this.hiddenInputPropsprops } />
 
-        { this.labelHTML }
-        <input { ...this.hiddenInputProps } />
+         <Row columns='10' className='row--sortcode'>
+           <div columnSpan='3'>
+           </div>
 
-        <div value={ this.state.value1 } fieldId='1'>
-          { this.inputHTML }
-          { this.validationHTML }
-        </div>
+           <Row columnSpan='7' columns='5' className='row--sortcode__fields'>
+             <Number
+                { ...this.inputProps }
+                 name={ sortCodeName1 }
+                 value={ this.state.sortCode1.value }
+                 ref={ (elem) => this.sortCode1 = elem }/>
 
-        <span> - </span>
+             <div columnSpan='1' className='sortcode__separator'>-</div>
 
-        <div value={ this.state.value2 } fieldId='2'>
-          { this.inputHTML }
-          { this.validationHTML }
-        </div>
+             <Number
+                { ...this.inputProps }
+                 name={ sortCodeName2 }
+                 value={ this.state.sortCode2.value }
+                 ref={ (elem) => this.sortCode2 = elem }/>
 
-        <span> - </span>
+             <div columnSpan='1' className='sortcode__separator'>-</div>
 
-        <div value={ this.state.value3 } fieldId='3'>
-          { this.inputHTML }
-          { this.validationHTML }
-        </div>
-
-      </div>
-    );
+             <Number
+                { ...this.inputProps }
+                 name={ sortCodeName3 }
+                 value={ this.state.sortCode3.value }
+                 ref={ (elem) => this.sortCode3 = elem }/>
+           </Row>
+         </Row>
+       </div>
+     );
   }
-}
-)));
+};
 
 export default Sortcode;

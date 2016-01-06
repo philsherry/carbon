@@ -1,7 +1,43 @@
-.ui-sortcode {
-}
 
-.ui-sortcode__input {
-  float: left;
-  width: 10%;
+.ui-sortcode {
+  .ui-sortcode__input--hidden {
+    input, .icon-error, .common-input__icon, .common-input__icon--error,
+    .common-input__message, .common-input__message--error  {
+      visibility: hidden;
+    }
+  }
+
+  .ui-sortcode__input {
+    width: 31px;
+
+    &:last-child {
+      .common-input__icon {
+        left: 31px;
+      }
+    }
+  }
+
+  .row--sortcode {
+    margin-top: -31px;
+
+    .row--sortcode__fields {
+      .ui-row__column {
+        &:not(:first-child):nth-child(odd) {
+          margin-left: -20px;
+        }
+
+        &:nth-child(even) {
+          width: 10px;
+          padding-left: 0px;
+        }
+      }
+    }
+
+    .sortcode__separator {
+      display: inline-block;
+      height: 31px;
+      width: auto;
+      line-height: 31px;
+    }
+  }
 }
