@@ -39,12 +39,18 @@ const data = ImmutableHelper.parseJSON({
   ],
   line_items: [
     {
+      foo: {
+        id: 1
+      },
       description: "This is my first item.",
       debit: "120.99",
       credit: "32.99",
       total: "-88.00"
     },
     {
+      foo: {
+        id: 2
+      },
       description: "This is my second item.",
       debit: "83.21",
       credit: "2.00",

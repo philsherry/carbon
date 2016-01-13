@@ -158,8 +158,13 @@ class TableRow extends React.Component {
         };
 
 
-    let name = ImmutableHelper.parseName(field.props.name, 'last');
-    let value = (this.props.data) ? this.props.data.get(name) : null;
+    
+    let arr = ImmutableHelper.parseName(field.props.name);
+    let index = arr.indexOf("{ROWID}") + 1;
+    let arrToGet = arr.slice(index);
+
+    let value = (this.props.data) ? this.props.data.getIn(arrToGet) : null;
+
     if (value != null) {
       fieldProps.value = value;
     }

@@ -89,10 +89,10 @@ var ImmutableHelper = {
   updateLineItem: (keys, value) => {
     var data = keys[0],
         line_item_key = keys[1],
-        _row_id = keys[2],
-        // as we modify the input name to use brackets (eg `user[foo][bar]`),
-        // this will find the attribute name from that string (eg `bar`)
-        attribute = ImmutableHelper.parseName(keys[3], 'last'),
+        _row_id = String(keys[2]),
+        arr = ImmutableHelper.parseName(keys[3]),
+        index = arr.indexOf(_row_id) + 1,
+        attributes = arr.slice(index),
         line_items = data.get(line_item_key);
 
     var index = ImmutableHelper.getLineItemIndex(line_items, _row_id);
@@ -104,7 +104,7 @@ var ImmutableHelper = {
       data = data.setIn([line_item_key, index, "_row_id"], _row_id);
     }
 
-    return data.setIn([line_item_key, index, attribute], value);
+    return data.setIn([line_item_key, index].concat(attributes), value);
   },
 
   /**

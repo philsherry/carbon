@@ -3,7 +3,9 @@ import FinancesActions from './../../../../actions/finances';
 import InputGrid from 'components/input-grid';
 import Textbox from 'components/textbox';
 import Decimal from 'components/decimal';
+import Dropdown from 'components/dropdown-filter';
 import Presence from 'utils/validations/presence';
+import Immutable from 'immutable';
 
 class Table extends React.Component {
   get totalClassName() {
@@ -14,8 +16,19 @@ class Table extends React.Component {
     }
   }
 
+  opts = () => {
+    return Immutable.fromJS([{
+      id: 1,
+      name: 'hello'
+    }, {
+      id: 2,
+      name: 'bye'
+    }]);
+  }
+
   render() {
     let fields = [
+      <Dropdown name="[foo][{ROWID}][foo][id]" label="Foo" options={ this.opts() } />,
       <Textbox validations={ [Presence()] } name="[foo][{ROWID}][description]" label="Description" />,
       <Decimal name="[foo][{ROWID}][credit]" label="Credit" />,
       <Decimal name="[foo][{ROWID}][debit]" label="Debit" />,
