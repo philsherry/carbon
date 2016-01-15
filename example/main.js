@@ -1,10 +1,10 @@
 import React from 'react';
 import { Route } from 'react-router';
 import { startRouter } from 'utils/router';
-import Dummy from './views/dummy';
+import App from './views/app';
 
 var routes = (
-  <Route path="/" component={ Dummy } />
+  <Route path="/" component={ App } />
 );
 
 startRouter(routes);

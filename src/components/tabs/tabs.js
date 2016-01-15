@@ -1,7 +1,7 @@
 import React from 'react';
 import Immutable from 'immutable';
 import Tab from './tab';
-import { compact } from 'lodash';
+import { flatten, compact } from 'lodash';
 
 /**
  * A Tabs widget.
@@ -163,6 +163,28 @@ class Tabs extends React.Component {
     this.setState({ selectedTabId: initialSelectedTabId });
   }
 
+  componentWillReceiveProps(nextProps) {
+    let children = flatten(nextProps.children);
+    if (Array.isArray(children)) {
+      let tabMatch = false;
+
+      compact(children).forEach((child) => {
+        console.log(child);
+        if (child.props.tabId == this.state.selectedTabId) {
+          tabMatch = true;
+        }
+      });
+
+      if (!tabMatch) {
+        this.setState({ selectedTabId: children[0].props.tabId }); 
+      }
+    } else {
+      if (this.state.selectedTabId !== children.props.tabId) {
+        this.setState({ selectedTabId: children.props.tabId }); 
+      }
+    }
+  }
+
   /**
    * Sets the validity state of the given tab (id) to the
    * given state (valid)
@@ -220,7 +242,9 @@ class Tabs extends React.Component {
    * @return Unordered list of tab titles
    */
   get tabHeaders() {
-    let tabTitles = React.Children.map(compact(this.props.children), ((child) => {
+    let tabTitles;
+    if (Array.isArray(this.props.children)) {
+      tabTitles = React.Children.map(compact(this.props.children), ((child) => {
 
       return(
         <li
@@ -230,7 +254,18 @@ class Tabs extends React.Component {
           data-tabid={ child.props.tabId } >
             { child.props.title }
         </li>);
-    }));
+      }));
+    } else {
+      let child = this.props.children;
+      tabTitles = (
+        <li
+          className={ this.tabHeaderClasses(child) }
+          onClick={ this.handleTabClick }
+          key={ child.props.tabId }
+          data-tabid={ child.props.tabId } >
+            { child.props.title }
+        </li>);
+    }
 
     return <ul className='ui-tabs__headers' >{ tabTitles }</ul>;
   }
@@ -262,16 +297,24 @@ class Tabs extends React.Component {
   get tabs() {
     if (!this.props.renderHiddenTabs) { return this.visibleTab; }
 
-    let tabs = React.Children.map(compact(this.props.children), ((child) => {
+    let tabs;
 
-      let klass = 'hidden';
+    if (Array.isArray(this.props.children)) {
+      tabs = React.Children.map(compact(this.props.children), ((child) => {
 
-      if (child.props.tabId === this.state.selectedTabId) {
-        klass = 'ui-tab--selected';
-      }
+        let klass = 'hidden';
 
-      return React.cloneElement(child, { className: klass });
-    }));
+        if (child.props.tabId === this.state.selectedTabId) {
+          console.log('true');
+          klass = 'ui-tab--selected';
+        }
+
+        return React.cloneElement(child, { className: klass });
+      }));
+    } else {
+      let klass = 'ui-tab--selected';
+      tabs = React.cloneElement(this.props.children, { className: klass });
+    }
 
     return tabs;
   }
