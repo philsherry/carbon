@@ -44,6 +44,40 @@ class ContactsStore extends Store {
     }
   }
 
+  [ContactsConstants.CONTACTS_ROW_DELETE](action) {
+    let contactIndex = -1;
+    let tabId = -1;
+
+    this.data.get('contacts').forEach((contact, index) => {
+      if (contact.get('id') == action.contactId) {
+        contactIndex = index;
+      }
+    });
+
+    this.data.get('tabs').forEach((tab, index) => {
+      if (tab.get('contactId') === action.contactId) {
+        tabId = index;
+      }
+    });
+
+    if (contactIndex >= 0) {
+      this.data = this.data.deleteIn(['contacts', contactIndex]);
+    }
+    
+    if (tabId >= 0) {
+      this.data = this.data.deleteIn(['tabs', tabId]);
+    }
+  }
+
+  [ContactsConstants.CONTACTS_NEW](action) {
+    let tabId = ImmutableHelper.guid();
+    let tabData = Immutable.fromJS({ contactId: tabId, tabId: tabId, type: 'create',
+      data: { id: tabId, name: '', company: '', type: 'Customer' }
+    });
+
+    this.data = this.data.setIn(['tabs', this.data.get('tabs').count()], tabData);
+  }
+
   [ContactsConstants.CONTACTS_UPDATE_TAB_CONTACT](action) {
     let tabIndex;
 
@@ -57,7 +91,8 @@ class ContactsStore extends Store {
   }
 
   [ContactsConstants.CONTACTS_SAVE_CONTACT](action) {
-    let contactIndex, tabId;
+    let contactIndex = this.data.get('contacts').count();
+    let tabId = this.data.get('tabs').count();
 
     this.data.get('contacts').forEach((contact, index) => {
       if (contact.get('id') == action.contactId) {
@@ -70,8 +105,11 @@ class ContactsStore extends Store {
         tabId = index;
       }
     });
+    
+    let row_id = action.contact.get('id');
+    let contact = action.contact.set('_row_id', row_id);
 
-    this.data = this.data.setIn(['contacts', contactIndex], action.contact);
+    this.data = this.data.setIn(['contacts', contactIndex], contact);
     this.data = this.data.deleteIn(['tabs', tabId]);
   }
 }

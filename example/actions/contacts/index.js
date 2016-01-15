@@ -10,13 +10,19 @@ let ContactsActions = {
     });
   },
 
-  contactNew: (ev) {
+  contactRowDelete: (ev, props) => {
+    Dispatcher.dispatch({
+      actionType: ContactsConstants.CONTACTS_ROW_DELETE,
+      row_id: props.row_id,
+      contactId: props.data.get('id')
+    });
+  },
+
+  contactNew: (ev) => {
     Dispatcher.dispatch({
       actionType: ContactsConstants.CONTACTS_NEW,
-      row_id: props.row_id,
-      contact: props.data 
     });
-  }
+  },
 
   saveContact: (ev, props) => {
     Dispatcher.dispatch({

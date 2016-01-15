@@ -1,3 +1,4 @@
 {
-  "main": "./contact.js"
+  "main": "./contact.js",
+  "style": "./contact.scss"
 }

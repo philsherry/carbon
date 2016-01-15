@@ -10,6 +10,12 @@ class Contact extends React.Component {
 
   state = { type: 'show' }
 
+  componentWillMount() {
+    if (this.props.type == 'create') {
+      this.setState({ type: 'edit' });
+    }
+  }
+
   handleEditClick = () => {
     this.setState({type: 'edit'})  
   }

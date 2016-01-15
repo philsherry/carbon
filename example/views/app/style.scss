@@ -1,3 +1,5 @@
+@import 'colors';
+
 .view-contacts {
   margin: 0 auto;
   width: 980px;
@@ -10,4 +12,8 @@
 
 .view-contact__title {
   text-align: center;
+}
+
+.ui-tab {
+  border: 1px solid $grey-light;
 }

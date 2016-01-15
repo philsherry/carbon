@@ -21,10 +21,17 @@ class Contacts extends React.Component {
     
     data.map((tabData) => {
       let tabId = tabData.get('tabId');
+      let tabName = tabData.getIn(['data', 'name'])
+
+      if (!tabName || tabName == '') {
+        tabName = 'Contact';
+      }
+
       tabs.push(
-        <Tab key={ tabId } title={ tabData.getIn(['data', 'name']) } tabId={ tabId }>
+        <Tab key={ tabId } title={ tabName } tabId={ tabId }>
           <ContactView
             tabId={ tabId }
+            type={ tabData.get('type') }
             contact={ tabData.get('data') } />
         </Tab>
       )
@@ -49,7 +56,7 @@ class Contacts extends React.Component {
               fields={ fields }
               data={ this.state.ContactsStore.get('contacts') }
               onRowClick={ ContactsActions.contactRowClicked }
-              onRowDelete={ this.handleRowDelete }
+              onRowDelete={ ContactsActions.contactRowDelete }
             />
           </Tab>
             
