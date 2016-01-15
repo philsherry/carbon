@@ -1,6 +1,7 @@
 import React from 'react';
 import Immutable from 'immutable';
 import Tab from './tab';
+import Icon from './../icon';
 import { flatten, compact } from 'lodash';
 
 /**
@@ -169,7 +170,6 @@ class Tabs extends React.Component {
       let tabMatch = false;
 
       compact(children).forEach((child) => {
-        console.log(child);
         if (child.props.tabId == this.state.selectedTabId) {
           tabMatch = true;
         }
@@ -253,6 +253,7 @@ class Tabs extends React.Component {
           key={ child.props.tabId }
           data-tabid={ child.props.tabId } >
             { child.props.title }
+            { this.headerDeleteButton(child) }
         </li>);
       }));
     } else {
@@ -264,10 +265,30 @@ class Tabs extends React.Component {
           key={ child.props.tabId }
           data-tabid={ child.props.tabId } >
             { child.props.title }
+            { this.headerDeleteButton(child) }
         </li>);
     }
 
     return <ul className='ui-tabs__headers' >{ tabTitles }</ul>;
+  }
+
+  handleDelete = (tab, ev) => {
+    ev.stopPropagation();
+    tab.props.onTabDelete(ev, tab.props); 
+  }
+
+  headerDeleteButton = (tab) => {
+    if (tab.props.onTabDelete) {
+      return(
+        <button
+          type="button"
+          className="ui-tab__delete"
+          onClick={this.handleDelete.bind(this, tab)}>
+
+          <Icon type="delete" className="ui-tab__delete-icon" />
+        </button>
+      );
+    }
   }
 
   /**

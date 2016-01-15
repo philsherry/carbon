@@ -33,6 +33,13 @@ let ContactsActions = {
     });
   },
 
+  contactTabDelete: (ev, props) => {
+    Dispatcher.dispatch({
+      actionType: ContactsConstants.CONTACTS_TAB_DELETE,
+      tabId: props.tabId
+    });
+  },
+
   updateTabContact: (ev, field_props, props) => {
     Dispatcher.dispatch({
       actionType: ContactsConstants.CONTACTS_UPDATE_TAB_CONTACT,

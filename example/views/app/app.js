@@ -11,10 +11,6 @@ import ContactsActions from './../../actions/contacts';
 
 class Contacts extends React.Component {
 
-  handleRowDelete = (ev, props) => {
-
-  }
-
   tempTabs = () => {
     let tabs = [];
     let data = this.state.ContactsStore.get('tabs');
@@ -28,7 +24,8 @@ class Contacts extends React.Component {
       }
 
       tabs.push(
-        <Tab key={ tabId } title={ tabName } tabId={ tabId }>
+        <Tab key={ tabId } title={ tabName } tabId={ tabId }
+          onTabDelete={ ContactsActions.contactTabDelete }>
           <ContactView
             tabId={ tabId }
             type={ tabData.get('type') }

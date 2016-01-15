@@ -5,6 +5,10 @@ $ui-tabs__header__background-color: #F6F7F8 !default;
 $ui-tabs__header__border-color: #D8D9DC !default;
 $ui-tabs__header__color: #666666 !default;
 
+$ui-tabs-icon-size: 18px;
+$ui-tabs-icon-color--normal: #AFAFAF;
+$ui-tabs-icon-color--hover: $error;
+
 .ui-tabs {
   margin-top: 15px;
 }
@@ -44,4 +48,26 @@ $ui-tabs__header__color: #666666 !default;
 
 .ui-tabs__headers__header--error {
   border-bottom-color: $red;
+}
+
+.ui-tab__delete {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 5px;
+  width: $ui-tabs-icon-size;
+}
+
+.ui-tab__delete-icon {
+
+  &:before {
+    color: $ui-tabs-icon-color--normal;
+    vertical-align: middle;
+    font-size: 13px;
+  }
+
+  &:hover:before {
+    color: $ui-tabs-icon-color--hover;
+  }
 }

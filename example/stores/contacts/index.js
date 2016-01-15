@@ -112,6 +112,18 @@ class ContactsStore extends Store {
     this.data = this.data.setIn(['contacts', contactIndex], contact);
     this.data = this.data.deleteIn(['tabs', tabId]);
   }
+
+  [ContactsConstants.CONTACTS_TAB_DELETE](action) {
+    let tabId;
+
+    this.data.get('tabs').forEach((tab, index) => {
+      if (tab.get('tabId') == action.tabId) {
+        tabId = index;
+      }
+    });
+
+    this.data = this.data.deleteIn(['tabs', tabId]);
+  }
 }
 
 export default new ContactsStore('ContactsStore', data, Dispatcher, { history: false });
