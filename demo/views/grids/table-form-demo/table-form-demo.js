@@ -12,7 +12,8 @@ import Message from 'components/message';
 import Filter from 'components/filter';
 import Textbox from 'components/textbox';
 import Button from 'components/button';
-import TableFormRow from './table-form-row';
+import Form from 'components/form';
+import TableFormBatch from './table-form-batch';
 
 class TableFormDemo extends React.Component {
   /**
@@ -259,17 +260,23 @@ class TableFormDemo extends React.Component {
       </TableRow>
     );
 
-    return rows.concat(data.map((row_data, index) => {
-      let cell_options = Immutable.fromJS([
-        {id:'United Kingdom', name:'United Kingdom'},
-        {id:'Ireland', name:'Ireland'}
-      ]);
+    let cell_options = Immutable.fromJS([
+      {id:'United Kingdom', name:'United Kingdom'},
+      {id:'Ireland', name:'Ireland'}
+    ]);
+
+    let activeRowBatch = this.state.appStore.get('activeRowBatch');
+    let activeRowIndex = this.state.appStore.get('activeRowIndex');
+
+    return rows.concat(data.map((batch, index) => {
       return (
-        <TableFormRow
-          row_data={ row_data }
+        <TableFormBatch
+          data={ batch }
+          active={ activeRowBatch == index }
+          activeIndex={ activeRowIndex }
           index={ index }
           cell_options={ cell_options }
-        />
+        /> 
       );
     }));
   }

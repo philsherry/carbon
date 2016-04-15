@@ -5,6 +5,7 @@ import ImmutableHelper from 'utils/helpers/immutable';
 import Immutable from 'immutable';
 import FormInputHelper from './../helpers/form-input-helper';
 import TableFormConstants from './../views/grids/table-form-demo/constants';
+import Perf from 'react-addons-perf';
 
 let data = ImmutableHelper.parseJSON({
   button: {
@@ -93,7 +94,7 @@ let data = ImmutableHelper.parseJSON({
     sortable: true
   },
   table_form: {
-    data: TableFormConstants.data,
+    data: [],
     filter: {}
   },
   tabs: {
@@ -110,6 +111,30 @@ let data = ImmutableHelper.parseJSON({
 });
 
 class AppStore extends Store {
+
+  constructor(name, data, Dispatcher, opts = {}) {
+    super(name, data, Dispatcher, opts);
+
+    let counter = 0;
+    let batch = 10;
+    let tableData = [];
+    let temp = []
+
+    console.log(batch);
+    TableFormConstants.data.forEach((row, rowIndex) => {
+      temp.push(row); 
+      counter++;
+
+      if (counter === batch) {
+        tableData.push(temp);
+        temp = [];
+        counter = 0;
+      }
+    });
+
+    this.data = this.data.setIn(['table_form', 'data'], Immutable.fromJS(tableData));
+  }
+
   /**
    * @method APP_VALUE_UPDATED
    */
@@ -122,7 +147,10 @@ class AppStore extends Store {
    * @method APP_TABLE_CELL_VALUE_UPDATED
    */
   [AppConstants.APP_TABLE_CELL_VALUE_UPDATED](action) {
-    let arr = [action.component, 'data', action.index].concat(action.key);
+    Perf.stop()
+    Perf.printInclusive();
+    Perf.start()
+    let arr = [action.component, 'data', action.batch_index, action.index].concat(action.key);
     this.data = this.data.setIn(arr, action.value);
   }
 
@@ -139,6 +167,11 @@ class AppStore extends Store {
   [AppConstants.APP_TABLE_UPDATED](action) {
     let data = ImmutableHelper.parseJSON(action.items);
     this.data = this.data.setIn([action.component, "data"], data);
+  }
+
+  [AppConstants.ACTIVATE_ROW](action) {
+    this.data = this.data.set('activeRowBatch', action.batch_index);
+    this.data = this.data.set('activeRowIndex', action.index);
   }
 
   /**

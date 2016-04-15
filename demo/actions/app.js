@@ -26,6 +26,14 @@ let AppActions = {
     });
   },
 
+  activateRow: (batch_index, index) => {
+    Dispatcher.dispatch({
+      actionType: AppConstants.ACTIVATE_ROW,
+      batch_index: batch_index,
+      index: index
+    });
+  },
+
   /**
    * @method appTableUpdated
    */
@@ -37,13 +45,13 @@ let AppActions = {
     });
   },
 
-  appTableCellUpdated: (index, key, component, event) => {
-    console.log(event.target.value);
+  appTableCellUpdated: (index, key, component, batch_index, event) => {
     Dispatcher.dispatch({
       actionType: AppConstants.APP_TABLE_CELL_VALUE_UPDATED,
       component: component,
       index: index,
       value: event.target.value,
+      batch_index: batch_index,
       key: key
     });
   },
