@@ -1,0 +1,33 @@
+@import 'colors';
+
+.styled-button {
+  display: inline-block;
+}
+
+.radio-or {
+  position: relative;
+  margin: 0px 10px;
+}
+
+.radio-icon {
+  color: white;
+
+  &:before {
+    height: 150px;
+    width: 150px;
+  }
+}
+
+.thing {
+  display: inline-block;
+  width: 200px;
+  height: 200px;
+}
+
+.styled-button > input + label > div {
+  background-color: $grey-light;
+}
+
+.styled-button > input:checked + label > div {
+  background-color: $blue-sky;
+}

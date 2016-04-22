@@ -5,6 +5,7 @@ import DropdownDemo from './dropdown-demo';
 import DateDemo from './date-demo';
 import CheckboxDemo from './checkbox-demo';
 import RadioButtonDemo from './radio-button-demo';
+import StyledRadioButtonDemo from './styled-radio-button-demo';
 
 class Forms extends React.Component {
   /**
@@ -16,6 +17,7 @@ class Forms extends React.Component {
         <h1>Forms</h1>
         <CheckboxDemo />
         <RadioButtonDemo/>
+        <StyledRadioButtonDemo/>
         <TextboxDemo />
         <DecimalDemo />
         <DateDemo />
