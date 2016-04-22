@@ -6,28 +6,40 @@
 
 .radio-or {
   position: relative;
-  margin: 0px 10px;
+  margin: 0px 15px;
+  top: 50px;
 }
 
 .radio-icon {
-  color: white;
-
   &:before {
-    height: 150px;
-    width: 150px;
+    font-size: 150px;
   }
 }
 
 .thing {
+  text-align: center;
   display: inline-block;
   width: 200px;
   height: 200px;
+  border-radius: 4px;
+}
+
+.thing-content {
+  position: relative;
+  top: 75px;
+}
+
+.thing-title {
+  position: relative;
+  top: 50px;
 }
 
 .styled-button > input + label > div {
   background-color: $grey-light;
+  color: $grey-mid;
 }
 
 .styled-button > input:checked + label > div {
   background-color: $blue-sky;
+  color: $white;
 }

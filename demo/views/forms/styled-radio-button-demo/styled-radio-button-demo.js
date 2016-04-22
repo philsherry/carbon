@@ -43,7 +43,10 @@ class RadiButtonDemo extends React.Component {
       <div>
         <StyledRadioButton onChange={ this.onChanging } className='styled-button' name='test' value='test1' >
           <div className='thing'>
-            <Icon className='radio-icon' type='search' />
+            <div className='thing-content'>
+              <Icon className='radio-icon' type='accounts' />
+              <h2 className='thing-title'>Accounts</h2>
+            </div>
           </div>
         </StyledRadioButton>
         <span className='radio-or'>
@@ -56,7 +59,10 @@ class RadiButtonDemo extends React.Component {
           value='test2'
         >
           <div className='thing'>
-            FOO
+            <div className='thing-content'>
+              <Icon className='radio-icon' type='payroll' />
+              <h2 className='thing-title'>Payroll</h2>
+            </div>
           </div>
         </StyledRadioButton>
       </div>
