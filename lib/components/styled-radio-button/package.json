@@ -1,0 +1,4 @@
+{
+  "main": "./styled-radio-button.js",
+  "style": "styled-radio-button.scss"
+}
