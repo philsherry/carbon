@@ -21,6 +21,7 @@ class Chrome extends React.Component {
               <Link to="/layout">Layout</Link>
               <Link to="/design">Design</Link>
               <Link to="/misc">Misc</Link>
+              <Link to="/templates">Templates</Link>
             </div>
           </div>
         </div>
