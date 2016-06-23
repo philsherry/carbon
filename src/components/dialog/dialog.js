@@ -48,9 +48,12 @@ class Dialog extends Modal {
      * Title displayed at top of dialog
      *
      * @property title
-     * @type {String}
+     * @type {Object}
      */
-    title: React.PropTypes.string,
+    title: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.object
+    ]),
 
     /**
      * Determines if the background is disabled
@@ -60,7 +63,30 @@ class Dialog extends Modal {
      * @type {Boolean}
      * @default true
      */
-    enableBackgroundUI: React.PropTypes.bool
+    enableBackgroundUI: React.PropTypes.bool,
+
+    /**
+     * Size of dialog, default size is 750px
+     *
+     * @property size
+     * @type {String}
+     * @default med
+     */
+    size: React.PropTypes.string,
+
+    /**
+     * Determins if the close icon is shown
+     *
+     * @property showCloseIcon
+     * @type {Boolean}
+     * @default true
+     */
+    showCloseIcon: React.PropTypes.bool
+  }
+
+  static defaultProps = {
+    size: 'med',
+    showCloseIcon: true
   }
 
   /**
@@ -182,6 +208,12 @@ class Dialog extends Modal {
     );
   }
 
+  get closeIcon() {
+    if (this.props.showCloseIcon) {
+      return <Icon className="ui-dialog__close" type="close" onClick={ this.props.onCancel } />;
+    }
+  }
+
   /**
    * Returns the computed HTML for the dialog.
    *
@@ -192,7 +224,7 @@ class Dialog extends Modal {
     return (
       <div ref={ (d) => this._dialog = d } className={ this.dialogClasses }>
         { this.dialogTitle }
-        <Icon className="ui-dialog__close" type="close" onClick={ this.props.onCancel } />
+        { this.closeIcon }
 
         <div className='ui-dialog__content'>
           { this.props.children }

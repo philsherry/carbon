@@ -2,6 +2,7 @@ import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 import Immutable from 'immutable';
 import { Table, TableHeader, TableRow, TableCell } from './table';
+import ActionToolbar from './../action-toolbar';
 
 describe('Table', () => {
   let instance, instancePager, instanceSortable, instanceCustomSort, spy;
@@ -94,6 +95,50 @@ describe('Table', () => {
     });
   });
 
+  describe('refresh', () => {
+    beforeEach(() => {
+      instance.actionToolbarComponent = TestUtils.renderIntoDocument(<ActionToolbar />);
+      spyOn(instance, 'resetHighlightedRow');
+      spyOn(instance.actionToolbarComponent, 'setState');
+      spyOn(instance, 'emitOnChangeCallback');
+      instance.refresh();
+    });
+
+    it('calls resetHighlightedRow', () => {
+      expect(instance.resetHighlightedRow).toHaveBeenCalled();
+    });
+
+    it('resets the selectedRows array', () => {
+      expect(instance.selectedRows).toEqual([]);
+    });
+
+    it('calls set state on the actionToolbarComponent', () => {
+      expect(instance.actionToolbarComponent.setState).toHaveBeenCalledWith({
+        total: 0,
+        selected: []
+      });
+    });
+
+    it('emits the onChange callback', () => {
+      expect(instance.emitOnChangeCallback).toHaveBeenCalledWith('refresh', instance.emitOptions());
+    });
+
+    describe('no actiontoolbar', () => {
+      beforeEach(() => {
+        instance.actionToolbarComponent = null;
+        instance.refresh();
+      });
+
+      it('calls resetHighlightedRow', () => {
+        expect(instance.resetHighlightedRow).toHaveBeenCalled();
+      });
+
+      it('resets the selectedRows array', () => {
+        expect(instance.selectedRows).toEqual([]);
+      });
+    });
+  });
+
   describe('selectRow', () => {
     let row;
 
@@ -139,6 +184,15 @@ describe('Table', () => {
         });
       });
 
+      describe('if row is to be selected but is selectAll', () => {
+        it('does not add the row', () => {
+          instance = TestUtils.renderIntoDocument(<Table onSelect={ spy } selectable={ true }><TableRow uniqueID="foo" selectAll={ true } /></Table>);
+          row = TestUtils.findRenderedComponentWithType(instance, TableRow);
+          instance.selectRow('foo', row, true);
+          expect(instance.selectedRows["foo"]).toBe(undefined);
+        });
+      });
+
       it('calls setState', () => {
         instance.selectRow('foo', row, true);
         expect(row.setState).toHaveBeenCalledWith({ selected: true });
@@ -146,7 +200,7 @@ describe('Table', () => {
 
       it('calls onSelect callback', () => {
         instance.selectRow('foo', row, true);
-        expect(spy).toHaveBeenCalledWith(['foo']);
+        expect(spy).toHaveBeenCalledWith({'foo': row});
       });
 
       it('skips the onSelect callback', () => {
@@ -236,8 +290,8 @@ describe('Table', () => {
     beforeEach(() => {
       row = TestUtils.findRenderedComponentWithType(instance, TableRow);
       instance.rows = {
-        foo: { props: { uniqueID: "foo" } },
-        bar: { props: { uniqueID: "bar" } }
+        foo: { props: { uniqueID: "foo" }, shouldHaveMultiSelectColumn: true },
+        bar: { props: { uniqueID: "bar" }, shouldHaveMultiSelectColumn: true }
       };
     });
 
@@ -282,7 +336,7 @@ describe('Table', () => {
         instance.rows = {};
         row = { state: {}, setState: () => {} };
         instance.selectAll(row);
-        expect(spy).toHaveBeenCalledWith([]);
+        expect(spy).toHaveBeenCalledWith({});
       });
     });
 
@@ -300,8 +354,23 @@ describe('Table', () => {
         instance.selectAll(row);
         expect(instance.actionToolbarComponent.setState).toHaveBeenCalledWith({
           total: 2,
-          selected: ['foo', 'bar']
+          selected: {'foo': {}, 'bar': {}}
         });
+      });
+    });
+
+    describe('when one of the rows cannot be selected', () => {
+      it('only selects rows that can be selected', () => {
+        row = TestUtils.findRenderedComponentWithType(instance, TableRow);
+        instance.rows = {
+          foo: { props: { uniqueID: "foo" }, shouldHaveMultiSelectColumn: false },
+          bar: { props: { uniqueID: "bar" }, shouldHaveMultiSelectColumn: true }
+        };
+
+        spyOn(instance, 'selectRow');
+        instance.selectAll(row);
+        expect(instance.selectRow).not.toHaveBeenCalledWith("foo", instance.rows["foo"], true, true);
+        expect(instance.selectRow).toHaveBeenCalledWith("bar", instance.rows["bar"], true, true);
       });
     });
   });
@@ -703,6 +772,17 @@ describe('Table', () => {
     });
   });
 
+  describe('tbody', () => {
+    it('returns content wrapped in a tbody', () => {
+      expect(instance.tbody.type).toEqual('tbody');
+    });
+
+    it('returns custom tbody when setting tbody prop to false', () => {
+      instance = TestUtils.renderIntoDocument(<Table tbody={ false }><tbody className="custom"><tr><td></td></tr></tbody></Table>);
+      expect(instance.tbody.props.className).toEqual("custom");
+    });
+  });
+
   describe('pager', () => {
     describe('when paginate is true', () => {
       it('returns the pager', () => {
@@ -713,6 +793,79 @@ describe('Table', () => {
     describe('when paginate is false', () => {
       it('does not return the pager', () => {
         expect(instance.pager).toBeFalsy();
+      });
+    });
+  });
+
+  describe('tableContent', () => {
+    describe('if there are children that are not immutable', () => {
+      it('returns the children', () => {
+        instance = TestUtils.renderIntoDocument(<Table><tr /></Table>);
+        expect(instance.tableContent).toEqual(instance.props.children);
+      });
+    });
+
+    describe('if there are children that are immutable', () => {
+      it('returns the children if there are children', () => {
+        let data = Immutable.fromJS([{ foo: 1 }, { foo: 2 }]),
+            children = data.map((child, index) => { return <tr key={ index }></tr>; });
+        instance = TestUtils.renderIntoDocument(<Table>{ children }</Table>);
+
+        expect(instance.tableContent).toEqual(children);
+      });
+
+      it('returns the loadingRow if no children and not yet received data', () => {
+        let data = Immutable.fromJS([]),
+            children = data.map((child, index) => { return <tr key={ index }></tr>; });
+        instance = TestUtils.renderIntoDocument(<Table>{ children }</Table>);
+        instance._hasRetreivedData = false;
+
+        expect(instance.tableContent).toEqual(instance.loadingRow);
+      });
+
+      it('returns the emptyRow if no children and has received data', () => {
+        let data = Immutable.fromJS([]),
+            children = data.map((child, index) => { return <tr key={ index }></tr>; });
+        instance = TestUtils.renderIntoDocument(<Table>{ children }</Table>);
+        instance._hasRetreivedData = true;
+
+        expect(instance.tableContent).toEqual(instance.emptyRow);
+      });
+
+      it('returns the children with the loading row if only row is a header and has not yet received data', () => {
+        let data = Immutable.fromJS([]),
+            children = data.push(<tr as='header' key='header'></tr>);
+        instance = TestUtils.renderIntoDocument(<Table>{ children }</Table>);
+        instance._hasRetreivedData = false;
+
+        expect(instance.tableContent.get(0)).toEqual(instance.props.children.get(0));
+        expect(instance.tableContent.get(1)).toEqual(instance.loadingRow);
+      });
+
+      it('returns the children with the empty row if only row is a header and has received data', () => {
+        let data = Immutable.fromJS([]),
+            children = data.push(<tr as='header' key='header'></tr>);
+        instance = TestUtils.renderIntoDocument(<Table>{ children }</Table>);
+        instance._hasRetreivedData = true;
+
+        expect(instance.tableContent.get(0)).toEqual(instance.props.children.get(0));
+        expect(instance.tableContent.get(1)).toEqual(instance.emptyRow);
+      });
+    });
+
+    describe('if children count is 0 and has not yet retrieved data', () => {
+      it('will return the loading row', () => {
+        instance = TestUtils.renderIntoDocument(<Table></Table>);
+        instance._hasRetreivedData = false;
+        expect(instance.tableContent).toEqual(instance.loadingRow);
+      });
+    });
+
+    describe('if children count is 0 and has retrieved data', () => {
+      it('will return the empty row', () => {
+        instance = TestUtils.renderIntoDocument(<Table></Table>);
+        instance._hasRetreivedData = true;
+        expect(instance.tableContent).toEqual(instance.emptyRow);
       });
     });
   });

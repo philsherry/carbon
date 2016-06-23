@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import TestUtils from 'react/lib/ReactTestUtils';
 import Dialog from './../dialog'
 import Confirm from './confirm';
@@ -28,7 +29,7 @@ describe('Confirm', () => {
 
   describe('dialogClasses', () => {
     it('returns the dialog class along with the  class', () => {
-      expect(instance.dialogClasses).toEqual('ui-dialog__dialog ui-confirm__confirm');
+      expect(instance.dialogClasses).toEqual('ui-dialog__dialog ui-dialog__dialog--xsmall ui-confirm__confirm');
     });
   });
 
@@ -37,12 +38,17 @@ describe('Confirm', () => {
 
     describe('yes button', () => {
       beforeEach(() => {
-        yes = TestUtils.scryRenderedDOMComponentsWithClass(instance, 'ui-confirm__button')[1] 
+        yes = TestUtils.scryRenderedDOMComponentsWithClass(instance, 'ui-confirm__button')[1]
         yesButton = TestUtils.scryRenderedDOMComponentsWithTag(instance, 'button')[1];
       });
 
       it('returns a yes confirm button', () => {
         expect(yes.className).toEqual('ui-confirm__button ui-confirm__yes');
+      });
+
+      it('returns a default Yes label', () => {
+        let node = ReactDOM.findDOMNode(yesButton);
+        expect(node.innerHTML).toEqual('Yes');
       });
 
       it('triggers the onConfirm when the yes button is clicked', () => {
@@ -53,7 +59,7 @@ describe('Confirm', () => {
 
     describe('no button', () => {
       beforeEach(() => {
-        no = TestUtils.scryRenderedDOMComponentsWithClass(instance, 'ui-confirm__button')[0] 
+        no = TestUtils.scryRenderedDOMComponentsWithClass(instance, 'ui-confirm__button')[0]
         noButton = TestUtils.scryRenderedDOMComponentsWithTag(instance, 'button')[0];
       });
 
@@ -61,9 +67,40 @@ describe('Confirm', () => {
         expect(no.className).toEqual('ui-confirm__button ui-confirm__no');
       });
 
+      it('returns a default No label', () => {
+        let node = ReactDOM.findDOMNode(noButton);
+        expect(node.innerHTML).toEqual('No');
+      });
+
       it('triggers the onCancel when the no button is clicked', () => {
         TestUtils.Simulate.click(noButton);
         expect(onCancel).toHaveBeenCalled();
+      });
+    });
+
+    describe('when custom labels are defined', () => {
+      beforeEach(() => {
+        instance = TestUtils.renderIntoDocument(
+          <Confirm
+            onCancel={ onCancel }
+            onConfirm={ onConfirm }
+            open={ true }
+            confirmLabel='Delete'
+            cancelLabel='Cancel'
+          />
+        );
+        yesButton = TestUtils.scryRenderedDOMComponentsWithClass(instance, 'ui-confirm__yes')[0];
+        noButton = TestUtils.scryRenderedDOMComponentsWithClass(instance, 'ui-confirm__no')[0];
+      });
+
+      it('returns a custom confirm label', () => {
+        let node = ReactDOM.findDOMNode(yesButton);
+        expect(node.textContent).toEqual('Delete');
+      });
+
+      it('returns a custom cancel label', () => {
+        let node = ReactDOM.findDOMNode(noButton);
+        expect(node.textContent).toEqual('Cancel');
       });
     });
   });

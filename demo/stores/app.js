@@ -16,6 +16,12 @@ let data = ImmutableHelper.parseJSON({
   button: {
     text: "Action"
   },
+  button_toggle: {
+    option_one: "Option One"
+  },
+  carousel: {
+    slideData: [{}, {}]
+  },
   checkbox: {
     label: "Checkbox",
     labelHelp: "Example label help.",
@@ -42,6 +48,9 @@ let data = ImmutableHelper.parseJSON({
     fieldHelp: "Example field help."
   },
   dialog: {
+    closeOnESCKey: false,
+    showCloseIcon: true,
+    closeOnBackgroundClick: false,
     open: false,
     title: 'Hello World!',
     disableBackground: true
@@ -61,6 +70,9 @@ let data = ImmutableHelper.parseJSON({
     open: true,
     text: "Sample flash notification."
   },
+  form: {
+    cancel: true
+  },
   help: {
     message: "This is an example of a help tooltip."
   },
@@ -76,6 +88,15 @@ let data = ImmutableHelper.parseJSON({
     as: "error",
     title: "Lorem ipsum dolor",
     text: "Nullam id dolor id nibh ultricies vehicula ut id elit."
+  },
+  multi_action_button: {
+    text: 'Multi Action Button',
+    as: 'secondary'
+  },
+  multi_step_wizard: {
+    currentStep: 1,
+    enableInactiveSteps: false,
+    completed: false
   },
   number: {
     value: 0
@@ -168,6 +189,22 @@ let data = ImmutableHelper.parseJSON({
   },
   tooltip: {
     message: 'Some Helpful Content'
+  },
+  validations: {
+    validator: 'presence',
+    length: {
+      setIs: false,
+      min: 0,
+      is: 5,
+      max: 5 
+    },
+    numeral: {
+      integer: false,
+      setIs: false,
+      min: 0,
+      is: 5,
+      max: 10
+    }
   }
 });
 

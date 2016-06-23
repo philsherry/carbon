@@ -195,7 +195,7 @@ class Pager extends React.Component {
    */
   get maxPage() {
     if (this.props.pageSize && this.props.pageSize !== '0') {
-      return Math.ceil(this.props.totalRecords / this.props.pageSize);
+      return Math.ceil(this.props.totalRecords / this.props.pageSize) || 1;
     }
     return 1;
   }
@@ -343,7 +343,7 @@ function showSizeText() {
 }
 
 function recordsText(numberOfRecords) {
-  return I18n.t('pager.records', { count: numberOfRecords, defaultValue: ' records' });
+  return I18n.t('pager.records', { count: Number(numberOfRecords), defaultValue: ' records' });
 }
 
 function pageX() {

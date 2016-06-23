@@ -1,11 +1,14 @@
 import React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import classNames from 'classnames';
 import Immutable from 'immutable';
+import I18n from 'i18n-js';
 import ActionToolbar from './../action-toolbar';
 import TableRow from './table-row';
 import TableCell from './table-cell';
 import TableHeader from './table-header';
 import Pager from './../pager';
+import Spinner from './../spinner';
 
 /**
  * A Table widget.
@@ -191,7 +194,15 @@ class Table extends React.Component {
      * @property thead
      * @type {Object}
      */
-    thead: React.PropTypes.object
+    thead: React.PropTypes.object,
+
+    /**
+     * Determines if you want the table to automatically render a tbody.
+     *
+     * @property tbody
+     * @type {Object}
+     */
+    tbody: React.PropTypes.bool
   }
 
   /**
@@ -394,6 +405,24 @@ class Table extends React.Component {
   }
 
   /**
+   * Refreshes the grid and resets any selected rows.
+   *
+   * @method refresh
+   * @return {Void}
+   */
+  refresh = () => {
+    this.resetHighlightedRow();
+    this.selectedRows = [];
+    if (this.actionToolbarComponent) {
+      this.actionToolbarComponent.setState({
+        total: 0,
+        selected: []
+      });
+    }
+    this.emitOnChangeCallback('refresh', this.emitOptions());
+  }
+
+  /**
    * Resets the highlighted row.
    *
    * @method resetHighlightedRow
@@ -471,7 +500,7 @@ class Table extends React.Component {
     if (!state && isSelected) {
       // if unselecting the row, delete it from the object
       delete this.selectedRows[id];
-    } else {
+    } else if (!row.props.selectAll) {
       // add current row to the list of selected rows
       this.selectedRows[id] = row;
     }
@@ -479,19 +508,19 @@ class Table extends React.Component {
     // set new state for the row
     row.setState({ selected: state });
 
-    let keys = Object.keys(this.selectedRows);
-
     if (this.actionToolbarComponent && !skipCallback) {
+      let keys = Object.keys(this.selectedRows);
+
       // update action toolbar
       this.actionToolbarComponent.setState({
         total: keys.length,
-        selected: keys
+        selected: this.selectedRows
       });
     }
 
     if (this.props.onSelect && !skipCallback) {
       // trigger onSelect event
-      this.props.onSelect(keys);
+      this.props.onSelect(this.selectedRows);
     }
   }
 
@@ -508,7 +537,9 @@ class Table extends React.Component {
     for (let key in this.rows) {
       // update all the rows with the new state
       let _row = this.rows[key];
-      this.selectRow(_row.props.uniqueID, _row, selectState, true);
+      if (_row.shouldHaveMultiSelectColumn) {
+        this.selectRow(_row.props.uniqueID, _row, selectState, true);
+      }
     }
 
     // update the row with the new state
@@ -517,19 +548,20 @@ class Table extends React.Component {
     // if select state is true, track the select all component
     this.selectAllComponent = selectState ? row : null;
 
-    let keys = Object.keys(this.selectedRows);
 
     if (this.actionToolbarComponent) {
+      let keys = Object.keys(this.selectedRows);
+
       // update action toolbar
       this.actionToolbarComponent.setState({
         total: keys.length,
-        selected: keys
+        selected: this.selectedRows
       });
     }
 
     if (this.props.onSelect) {
       // trigger onSelect event
-      this.props.onSelect(keys);
+      this.props.onSelect(this.selectedRows);
     }
   }
 
@@ -811,6 +843,102 @@ class Table extends React.Component {
   }
 
   /**
+   * Returns a row to be used for loading.
+   *
+   * @method loadingRow
+   * @return {Object} JSX
+   */
+  get loadingRow() {
+    return (
+      <TableRow key="__loading__" selectable={ false } highlightable={ false } hideMultiSelect={ true }>
+        <TableCell colSpan="42" align="center">
+          <ReactCSSTransitionGroup
+            transitionName="table-loading"
+            transitionEnterTimeout={ 300 }
+            transitionLeaveTimeout={ 300 }
+            transitionAppearTimeout={ 300 }
+            transitionAppear={ true }
+          >
+            <Spinner size="small" />
+          </ReactCSSTransitionGroup>
+        </TableCell>
+      </TableRow>
+    );
+  }
+
+  /**
+   * Returns a row to be used for no data.
+   *
+   * @method emptyRow
+   * @return {Object} JSX
+   */
+  get emptyRow() {
+    return (
+      <TableRow key="__loading__" selectable={ false } highlightable={ false }>
+        <TableCell colSpan="42" align="center">
+          { I18n.t("table.no_data", { defaultValue: "No results to display" }) }
+        </TableCell>
+      </TableRow>
+    );
+  }
+
+  /**
+   * Works out what content to display in the table.
+   *
+   * @method tableContent
+   * @return {Object} JSX
+   */
+  get tableContent() {
+    let children = this.props.children,
+        hasChildren = children;
+
+    // if using immutable js we can count the children
+    if (children && children.count) {
+      let numOfChildren = children.count(),
+          onlyChildIsHeader = numOfChildren === 1 && children.first().props.as === "header";
+
+      if (onlyChildIsHeader) {
+        if (this._hasRetreivedData) {
+          // if already retreived data then show empty row
+          children = children.push(this.emptyRow);
+        } else {
+          // if not yet retreived data then show loading row
+          children = children.push(this.loadingRow);
+        }
+      } else {
+        // check if there actually are any children
+        hasChildren = numOfChildren > 0;
+      }
+    }
+
+    if (hasChildren) {
+      return children;
+    } else if (this._hasRetreivedData) {
+      return this.emptyRow;
+    } else {
+      return this.loadingRow;
+    }
+  }
+
+  /**
+   * Returns the content, wrapped in a tbody.
+   *
+   * @method tbody
+   * @return {Object} JSX
+   */
+  get tbody() {
+    if (this.props.tbody === false) {
+      return this.tableContent;
+    } else {
+      return (
+        <tbody>
+          { this.tableContent }
+        </tbody>
+      );
+    }
+  }
+
+  /**
    * Renders the component.
    *
    * @method render
@@ -822,9 +950,7 @@ class Table extends React.Component {
         <div className={ this.wrapperClasses } ref={ (wrapper) => { this._wrapper = wrapper; } } >
           <table className={ this.tableClasses } ref={ (table) => { this._table = table; } } >
             { this.thead }
-            <tbody>
-              { this.props.children }
-            </tbody>
+            { this.tbody }
           </table>
         </div>
         { this.pager }
