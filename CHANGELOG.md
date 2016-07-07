@@ -6,7 +6,13 @@
 
 ## Minor Changes
 
+<<<<<<< HEAD
 * The `children` prop for the Help component is no longer required.
+=======
+* Pod title size has been reduced to more accurately match the demo.
+* Secondary Content components font weight has been normalised.
+* Sibling Content components now have a top margin for spacing.
+>>>>>>> pod-title
 
 # 0.19.0
 
