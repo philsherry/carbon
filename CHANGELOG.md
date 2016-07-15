@@ -28,6 +28,10 @@ For example:
 
 * The window will automatically scroll to the top when the route is transitioned
 
+## Red and Green Buttons
+
+The `Button` component can now have red and green themes, set using the `as` prop.
+
 ## Minor Changes
 
 * Pod title size has been reduced to more accurately match the demo.
@@ -42,6 +46,7 @@ For example:
 * Fixes fieldset and input margin when rendered on top of one another.
 * Fixes position of icon in dropdown button.
 * Fixes error icon position for inputs with field help.
+* AppWrapper has been increased to 1600px and some padding has been added.
 
 # 0.19.0
 
