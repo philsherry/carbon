@@ -1,8 +1,31 @@
+# 0.21.0
+
+## New Icons
+
+* Print
+* Pdf
+* Csv
+* Message
+
+## Minor Improvements
+
+* Input components now accept an onPaste prop.
+* Add character count to textarea
+* Form now accepts a `onSubmit` prop which is only called when the form is valid.
+* AppWrapper now has a minium width of 958px.
+* SUG-19: Change padding for the MessageComponent when transparent and non dismissable. When transparent is applied the padding reduces to 2px, but if it's dismissable it enlarges to it's original to prevent overlap.
+
 # 0.20.0
+
+## Breaking Changes
+
+* The CSS for inputs and icons associated with inputs has changed. If you have overridden this CSS in you code, this may break your input CSS.
 
 ## New Components
 
 * Heading - useful for page titles.
+* ShowEditPod - Inline editing of fields
+* Date Range - Allows start and end date setting with validation for invalid date combinations.
 
 ## History and Browser Status
 
@@ -16,7 +39,7 @@ With the history object you can control the DOM for any UI that uses React Route
 
 ## Link Prefixes
 
-The `Link` component can now have it's `href` or `to` props prefixed to customise the type of link it is (regular or react router).
+The `Link` component can now have its `href` or `to` props prefixed to customise the type of link it is (regular or react router).
 
 For example:
 
@@ -32,22 +55,32 @@ For example:
 
 The `Button` component can now have red and green themes, set using the `as` prop.
 
+## New Icons
+
+* Information
+* Sync
+* Progress
+* Submitted
+* Completed
+
 ## Minor Changes
 
 * A Sass variable has been introduced to define the path where fonts are located.
 * Pod title size has been reduced to more accurately match the demo.
-* Secondary Content components font weight has been normalised.
+* Secondary Content components font weight has been standardised.
 * The `children` prop for the Help component is no longer required.
 * Sibling Content components now have a top margin for spacing.
 * Button height has been fixed for buttons that behave like links.
 * Adds inline help for radio button.
 * Fixes inline help for checkboxes.
 * Radio Button sprite has been given a fixed size.
+* Increase textTag font-spacing from 0.5 to 0.8.
 * Button can receive a prop of `to`.
 * Fixes fieldset and input margin when rendered on top of one another.
 * Fixes position of icon in dropdown button.
 * Fixes error icon position for inputs with field help.
 * AppWrapper has been increased to 1600px and some padding has been added.
+* Form now accepts a prop of `save` which can be used to hide the save button.
 
 # 0.19.0
 
