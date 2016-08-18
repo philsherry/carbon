@@ -20,7 +20,8 @@ let data = ImmutableHelper.parseJSON({
     body: "This component contains your content within the confines of the width of your application."
   },
   button: {
-    text: "Action"
+    text: "Action",
+    as: "secondary"
   },
   button_toggle: {
     option_one: "Option One",
@@ -99,6 +100,15 @@ let data = ImmutableHelper.parseJSON({
     cancel: true,
     saveText: '',
     cancelText: ''
+    cancel: true,
+    save: true
+  },
+  heading: {
+    title: "Heading Example",
+    content: "This is an example of the heading component.",
+    help: "This is an example of help text.",
+    help_link: "#",
+    back_link_href: "#"
   },
   help: {
     message: "This is an example of a help tooltip.",
@@ -187,6 +197,23 @@ let data = ImmutableHelper.parseJSON({
       { columnOffset: '', columnSpan: '', columnAlign: 'left' },
     ]
   },
+  show_edit_pod: {
+    deletable: false,
+    address_1: '21 North Park',
+    address_2: '',
+    city: 'Newcastle upon Tyne',
+    county: 'Tyne and Wear',
+    country: 'United Kingdom',
+    postcode: 'NE',
+    edit: {
+      address_1: '',
+      address_2: '',
+      city: '',
+      county: '',
+      country: '',
+      postcode: '',
+    }
+  },
   sidebar: {
     open: false
   },
@@ -196,6 +223,13 @@ let data = ImmutableHelper.parseJSON({
   },
   split_button: {
     text: "Main Action"
+  },
+  text: {
+    content: "Example of stylised text content."
+  },
+  textarea: {
+    characterLimit: 100,
+    enforceCharacterLimit: true
   },
   table: {
     current_page: "1",
@@ -278,7 +312,7 @@ class AppStore extends Store {
     if (action.component === 'dropdown_filter_ajax') {
       this.data = this.data.setIn(arr, action.visibleValue);
     }
-   }
+  }
 
   /**
    * @method APP_DELETE_ROW
@@ -293,6 +327,18 @@ class AppStore extends Store {
   [AppConstants.APP_TABLE_UPDATED](action) {
     let data = ImmutableHelper.parseJSON(action.items);
     this.data = this.data.setIn([action.component, "data"], data);
+  }
+
+  [AppConstants.APP_EDIT_CONTENT](action) {
+    this.data = this.data.setIn([action.component, 'edit'],
+      this.data.get(action.component)
+    );
+  }
+
+  [AppConstants.APP_SAVE_EDITED_CONTENT](action) {
+    this.data = this.data.set(action.component,
+      this.data.getIn([action.component, 'edit'])
+    );
   }
 
   /**

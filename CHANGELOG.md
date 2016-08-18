@@ -1,10 +1,121 @@
+# 0.21.1
+
+## Minor Improvements
+
+* PresenceValidator now returns false for strings that consist only of spaces
+
+# 0.21.0
+
+## New Icons
+
+* Print
+* Pdf
+* Csv
+* Message
+
+## Minor Improvements
+
+* Link now accepts tooltip props to apply a tooltip to the link. This can be used with the Action Toolbar to apply tooltips to the icon links.
+* Input components now accept an onPaste prop.
+* Add character count to textarea
+* Form now accepts a `onSubmit` prop which is only called when the form is valid.
+* AppWrapper now has a minimum width of 958px.
+* SUG-19: Change padding for the MessageComponent when transparent and non dismissable. When transparent is applied the padding reduces to 2px, but if it's dismissable it enlarges to it's original to prevent overlap.
+* allows `Link` component to handle `mailto:` as an href prefix, previously the `to:` would have been stripped from the string
+* fix error count, when input get disabled
+
+# 0.20.0
+
+## Breaking Changes
+
+* The CSS for inputs and icons associated with inputs has changed. If you have overridden this CSS in you code, this may break your input CSS.
+
+## New Components
+
+* Heading - useful for page titles.
+* ShowEditPod - Inline editing of fields
+* Date Range - Allows start and end date setting with validation for invalid date combinations.
+
+## History and Browser Status
+
+The router's history object is now accessible:
+
+```js
+import { history } from 'carbon/lib/utils/router';
+```
+
+With the history object you can control the DOM for any UI that uses React Router. For more information see the guides https://github.com/ReactJSTraining/history/tree/master/docs
+
+## Link Prefixes
+
+The `Link` component can now have its `href` or `to` props prefixed to customise the type of link it is (regular or react router).
+
+For example:
+
+```js
+<Link href="to:/foobar">My React Router Link</Link>
+```
+
+## Router transitions
+
+* The window will automatically scroll to the top when the route is transitioned
+
+## Red and Green Buttons
+
+The `Button` component can now have red and green themes, set using the `as` prop.
+
+## New Icons
+
+* Information
+* Sync
+* Progress
+* Submitted
+* Completed
+
+## Minor Changes
+
+* A Sass variable has been introduced to define the path where fonts are located.
+* Pod title size has been reduced to more accurately match the demo.
+* Secondary Content components font weight has been standardised.
+* The `children` prop for the Help component is no longer required.
+* Sibling Content components now have a top margin for spacing.
+* Button height has been fixed for buttons that behave like links.
+* Adds inline help for radio button.
+* Fixes inline help for checkboxes.
+* Radio Button sprite has been given a fixed size.
+* Increase textTag font-spacing from 0.5 to 0.8.
+* Button can receive a prop of `to`.
+* Fixes fieldset and input margin when rendered on top of one another.
+* Fixes position of icon in dropdown button.
+* Fixes error icon position for inputs with field help.
+* AppWrapper has been increased to 1600px and some padding has been added.
+* Form now accepts a prop of `save` which can be used to hide the save button.
+
 # 0.19.0
+
+## Major Changes
+
+!! Babel upgraded to Version 6
+* When updating the latest version it is recommend to remove node modules `rm -rf node_modules` and reinstall `npm install`
+
+!! Phantom JS Upgraded to version 2
+* This may cause a few tests that were giving false positives to fail
 
 ## New Components
 
 * Profile - User to show portrait with name and email.
 * AppWrapper - confines your content to the width of your application.
+* Menu
 * NavigationBar
+
+## Input Label Padding
+
+* All input label padding has been slightly increased.
+
+## Help Updates
+
+* Help component has been updated with a new icon.
+* Input Label decorator has been fixed to render the help class for labelHelp.
 
 ## Acronymize Function
 
@@ -13,6 +124,15 @@
 ## Dropdown component updates
 
 * All dropdowns now allow keying up and down through the list
+
+## Polling helper
+
+* A polling helper has been added that performs customizable ajax polling.
+
+## New Icons
+
+* Help
+* Chevron
 
 # 0.18.1
 
@@ -798,7 +918,7 @@ export default MyView
 
 ## Bug Fixes
 
-* [CARBON-102](https://sageone.atlassian.net/browse/CARBON-102) - Fixes bug - 'item is undefined triggered when clicking away from dropdown with option highlighted'.
+* Fixes bug - 'item is undefined triggered when clicking away from dropdown with option highlighted'.
 
 # 0.1.6
 
