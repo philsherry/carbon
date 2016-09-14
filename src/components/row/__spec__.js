@@ -45,8 +45,8 @@ describe('Row', () => {
         instance = TestUtils.renderIntoDocument(
           <Row className="foobar">
             {
-              data.map((item) => {
-                return <div>{ item.get('name') }</div>;
+              data.map((item, i) => {
+                return <div key={ i }>{ item.get('name') }</div>;
               })
             }
           </Row>
