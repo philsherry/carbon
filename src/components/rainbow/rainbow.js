@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactHighcharts from 'react-highcharts/dist/bundle/highcharts';
+import ReactHighcharts from 'react-highcharts/dist/bundle';
 import classNames from 'classnames';
 
 /**

@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import Icon from './../icon';
 import { Link } from 'react-router';
+import { validProps } from '../../utils/ether';
 
 /**
  * A link widget.
@@ -77,6 +78,8 @@ class _Link extends React.Component {
     iconAlign: 'left'
   }
 
+  static safeProps = ['disabled']
+
   /**
    * Getter for componet properties.
    *
@@ -84,7 +87,7 @@ class _Link extends React.Component {
    * @return {Object} props
    */
   get componentProps() {
-    let { ...props } = this.props;
+    let { ...props } = validProps(this);
 
     delete props.href;
     delete props.to;

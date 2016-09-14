@@ -48,7 +48,7 @@ class TableHeader extends React.Component {
     name: function(props, propName, componentName) {
       if (props.sortable) {
         if (!props[propName]) {
-          throw new Error(`Sortable columns require a prop of name of type String. See render method of ${componentName}`);
+          throw new Error('Sortable columns require a prop of name of type String');
         }
         if (typeof props[propName] !== 'string') {
           throw new Error('name must be a string');

@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import Link from './../link';
+import { validProps } from '../../utils/ether';
 
 /**
  * A button widget.
@@ -53,6 +54,8 @@ class Button extends React.Component {
     disabled: React.PropTypes.bool
   }
 
+  static safeProps = ['disabled']
+
   static defaultProps = {
     as: 'secondary',
     disabled: false
@@ -65,7 +68,8 @@ class Button extends React.Component {
    * @return {Object} JSX
    */
   get element() {
-    let {...props} = this.props,
+
+    let { ...props } = validProps(this),
         // if props.href then render an anchor instead
         el = props.href || props.to ? Link : 'button',
         as = this.props.as;
