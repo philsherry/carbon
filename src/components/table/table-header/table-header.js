@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import Icon from './../../icon';
+import { validProps } from '../../../utils/ether';
 
 /**
  * A TableHeader widget.
@@ -45,7 +46,7 @@ class TableHeader extends React.Component {
      * @property name
      * @type {String}
      */
-    name: function(props, propName, componentName) {
+    name: function(props, propName) {
       if (props.sortable) {
         if (!props[propName]) {
           throw new Error('Sortable columns require a prop of name of type String');
@@ -140,7 +141,7 @@ class TableHeader extends React.Component {
    * @return {Object}
    */
   get tableHeaderProps() {
-    let { ...props } = this.props;
+    let { ...props } = validProps(this);
 
     delete props.children;
 

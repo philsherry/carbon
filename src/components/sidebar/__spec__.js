@@ -109,7 +109,7 @@ describe('Sidebar', () => {
       expect(textboxes.length).toEqual(3);
     });
   });
-  
+
   describe('render', () => {
     describe('when sidebar is open', () => {
       it('renders a parent div', () => {
