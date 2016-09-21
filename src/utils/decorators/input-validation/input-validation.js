@@ -109,7 +109,15 @@ let InputValidation = (ComposedComponent) => class Component extends ComposedCom
      * @property
      * @type {Array}
      */
-    validations: React.PropTypes.array
+    validations: React.PropTypes.array,
+
+    /**
+     * Array of warnings currently on this input
+     *
+     * @property
+     * @type {Array}
+     */
+     warnings: React.PropTypes.array
   });
 
   /**

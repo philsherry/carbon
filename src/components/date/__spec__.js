@@ -4,7 +4,7 @@ import moment from 'moment';
 import Date from './date';
 import Events from './../../utils/helpers/events';
 
-describe('Date', () => {
+fdescribe('Date', () => {
   let instance;
   let today = moment().format("DD MMM YYYY");
   let hiddenToday = moment().format("YYYY-MM-DD");
@@ -254,25 +254,25 @@ describe('Date', () => {
     });
 
     it('sets blockBlur to true', () => {
-      instance.refs.datepicker.handleChange();
+      instance.datepicker.handleChange();
       expect(instance.blockBlur).toBeTruthy();
     });
 
     it('closes the date picker', () => {
-      let spy = spyOn(instance, 'closeDatePicker')
-      instance.refs.datepicker.handleChange();
+      let spy = spyOn(instance, 'closeDatePicker');
+      instance.datepicker.handleChange();
       expect(instance.closeDatePicker).toHaveBeenCalled();
     });
 
     it('emits a onChange callback', () => {
       spyOn(instance, 'emitOnChangeCallback')
-      instance.refs.datepicker.handleChange();
+      instance.datepicker.handleChange();
       expect(instance.emitOnChangeCallback).toHaveBeenCalledWith( hiddenToday );
     });
 
     it('updates the visible value', () => {
       spyOn(instance, 'updateVisibleValue')
-      instance.refs.datepicker.handleChange();
+      instance.datepicker.handleChange();
       expect(instance.updateVisibleValue).toHaveBeenCalled();
     });
   });
@@ -371,7 +371,7 @@ describe('Date', () => {
 
     beforeEach(() => {
       instance.setState({ open: true });
-      datepicker = instance.refs.datepicker;
+      datepicker = instance.datepicker;
     });
 
     it('sets the weekDays and format', () => {
@@ -431,7 +431,7 @@ describe('Date', () => {
           <Date name='date' label='Date' minDate={ minDate } />
         )
         instance.setState({ open: true });
-        date = instance.refs.datepicker;
+        date = instance.datepicker;
       });
 
       it('sets the minDate to the correct value', () => {
@@ -448,7 +448,7 @@ describe('Date', () => {
           <Date name='date' label='Date' maxDate={ maxDate } />
         )
         instance.setState({ open: true });
-        date = instance.refs.datepicker;
+        date = instance.datepicker;
       });
 
       it('sets the maxDate to the correct value', () => {
@@ -490,13 +490,13 @@ describe('Date', () => {
     describe('when state.open is true', () => {
       it('renders a date picker', () => {
         instance.setState({ open: true });
-        expect(instance.refs.datepicker).toBeTruthy();
+        expect(instance.datepicker).toBeTruthy();
       });
     });
 
     describe('when state.open is false', () => {
       it('does not renders a date picker', () => {
-        expect(instance.refs.datepicker).toBeFalsy();
+        expect(instance.datepicker).toBeFalsy();
       });
     });
   });

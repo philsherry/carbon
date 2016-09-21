@@ -11,12 +11,12 @@ let FormInputHelper = {
       value: scope.value('value'),
       label: scope.value('label'),
       labelInline: scope.value('labelInline'),
-      labelWidth: scope.value('labelInline') ? scope.value('labelWidth') : '',
+      labelWidth: scope.value('labelInline') ? scope.value('labelWidth') : undefined,
       disabled: scope.value('disabled'),
       readOnly: scope.value('readOnly'),
       prefix: scope.value('prefix'),
       fieldHelp: scope.value('fieldHelp'),
-      inputWidth: scope.value('labelInline') ? scope.value('inputWidth') : '',
+      inputWidth: scope.value('labelInline') ? scope.value('inputWidth') : undefined,
       labelHelp: scope.value('labelHelp'),
       labelAlign: (scope.value('labelAlign') ? 'right' : null)
     };
@@ -63,10 +63,6 @@ let FormInputHelper = {
 
     if (scope.value('prefix')) {
       html += `\n  prefix='${scope.value('prefix')}'`;
-    }
-
-    if (scope.value('helpMessage')) {
-      html += `\n  helpMessage='${scope.value('helpMessage')}'`;
     }
 
     // determine if we need extra space

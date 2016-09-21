@@ -69,6 +69,15 @@ let InputLabel = (ComposedComponent) => class Component extends ComposedComponen
     ]),
 
     /**
+     * Aligns right when passed 'right', aligns left for
+     * any other value
+     *
+     * @property
+     * @type {String}
+     */
+    labelAlign: React.PropTypes.string,
+
+    /**
      * Pass true to format the input/label inline
      *
      * @property
@@ -85,6 +94,17 @@ let InputLabel = (ComposedComponent) => class Component extends ComposedComponen
      * @type {Number}
      */
     labelWidth: React.PropTypes.number,
+
+    /**
+     * This message for a Help component to render for this label
+     *
+     * @property
+     * @type {Boolean}
+     */
+    labelHelp: React.PropTypes.string,
+    labelHelpHref: React.PropTypes.string,
+    labelHelpAlign: React.PropTypes.string,
+    labelHelpPosition: React.PropTypes.string,
 
     /**
      * Pass a percentage to define the width of the label when it

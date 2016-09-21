@@ -415,6 +415,7 @@ class Dropdown extends React.Component {
     if (!this.props.readOnly && !this.props.disabled) {
       props.onFocus = this.handleFocus;
     }
+
     return props;
   }
 
