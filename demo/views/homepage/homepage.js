@@ -1,5 +1,6 @@
 import React from 'react';
 import Pod from 'components/pod';
+import Maps from 'components/maps';
 
 class Homepage extends React.Component {
   /**
@@ -9,6 +10,11 @@ class Homepage extends React.Component {
     return (
       <Pod className="carbon-homepage">
         Carbon
+        <Maps
+          center='Newcastle'
+          className='myMap'
+          mapId='foo'
+        />
       </Pod>
     );
   }
