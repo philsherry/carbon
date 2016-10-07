@@ -38,6 +38,7 @@
     "react-router": "~1.0.0"
   },
   "dependencies": {
+    "babel-standalone": "^6.17.0",
     "bignumber.js": "~2.1.0",
     "bowser": "~1.0.0",
     "classnames": "~2.2.3",

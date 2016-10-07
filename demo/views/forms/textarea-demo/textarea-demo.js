@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'utils/flux';
 import AppStore from './../../../stores/app';
 import AppActions from './../../../actions/app';
@@ -10,6 +11,49 @@ import NumberComponent from 'components/number';
 import Row from 'components/row';
 import Textbox from 'components/textbox';
 import Checkbox from 'components/checkbox';
+
+import { transform } from 'babel-standalone';
+
+class Demo {
+  constructor(name) {
+    this.name = name;
+    this.code = `<${name}`;
+    this.hasProps = false;
+    this.hasChildren = false;
+  }
+
+  addProps = (props, data) => {
+    for (let index in props) {
+      let prop = props[index];
+      return this.addProp(prop, data.get(prop));
+    }
+  }
+
+  addProp = (prop, value) => {
+    if (value) {
+      this.hasProps = true;
+      if (typeof value === "boolean") {
+        this.code += `\n  ${prop}={ ${value} }`;
+      } else {
+        this.code += `\n  ${prop}='${value}'`;
+      }
+    }
+  }
+
+  close = () => {
+    if (this.hasChildren) {
+      this.code += `\n</${this.name}>`;
+    } else if (this.hasProps) {
+      this.code += "\n/>";
+    } else {
+      this.code += " />";
+    }
+  }
+
+  toString = () => {
+    return this.code;
+  }
+}
 
 class TextareaDemo extends React.Component {
 
@@ -27,17 +71,32 @@ class TextareaDemo extends React.Component {
     return AppActions.appValueUpdated.bind(this, 'textarea');
   }
 
+  cachedCode = null
+
+  getCode = () => {
+    try {
+      let code = this.value('value') || this.code;
+      ReactDOM.render(<div>{ eval(transform(code, { presets: ['es2015', 'react'] }).code) }</div>, document.getElementById('foo'));
+      // return this.cachedCode = 
+    } catch(err) {
+      alert('foo');
+      return this.cachedCode;
+    }
+  }
+
   /**
    * @method demo
    */
   get demo() {
+    this.getCode();
     return (
-      <Textarea
-        { ...FormInputHelper.demoProps(this, this.action) }
-        expandable={ this.value('expandable') }
-        characterLimit={ this.value('characterLimit') }
-        enforceCharacterLimit={ this.value('enforceCharacterLimit') }
-      />
+      <div>
+        <Textarea
+          onChange={ this.action.bind(this, 'value') }
+          rows="15"
+          value={ this.value('value') || this.code }
+        />
+      </div>
     );
   }
 
@@ -45,50 +104,10 @@ class TextareaDemo extends React.Component {
    * @method code
    */
   get code() {
-    let html = "import Textarea from 'carbon/lib/components/textarea';\n\n";
-
-    html += "<Textarea";
-
-    if (this.value('label')) {
-      html += `\n  label='${this.value('label')}'`;
-    }
-
-    if (this.value('disabled')) {
-      html += `\n  disabled={${this.value('disabled')}}`;
-    }
-
-    if (this.value('readOnly')) {
-      html += `\n  readOnly={${this.value('readOnly')}}`;
-    }
-
-    if (this.value('prefix')) {
-      html += `\n  prefix='${this.value('prefix')}'`;
-    }
-
-    if (this.value('expandable')) {
-      html += `\n  expandable='${this.value('expandable')}'`;
-    }
-
-    if (this.value('characterLimit')) {
-      html += `\n  characterLimit='${this.value('characterLimit')}'`;
-    }
-
-    if (!this.value('enforceCharacterLimit')) {
-      html += `\n  enforceCharacterLimit={ false }`;
-    }
-
-    // determine if we need extra space
-    let splitHtml = html.split("\n  ");
-    if (splitHtml.length == 1) {
-      html += " ";
-    } else {
-      html += "\n";
-    }
-
-    return html;
-    html += "/>\n\n";
-
-    return html;
+    let demo = new Demo('Textarea');
+    demo.addProps(['label', 'disabled'], this.state.appStore.get('textarea'));
+    demo.close();
+    return demo.toString();
   }
 
   /**
@@ -160,5 +179,11 @@ class TextareaDemo extends React.Component {
     );
   }
 }
+
+global.React = React;
+global.Textarea = Textarea;
+global.Row = Row;
+global.Textbox = Textbox;
+global.Checkbox = Checkbox;
 
 export default connect(TextareaDemo, AppStore);
