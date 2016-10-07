@@ -76,10 +76,8 @@ class TextareaDemo extends React.Component {
   getCode = () => {
     try {
       let code = this.value('value') || this.code;
-      ReactDOM.render(<div>{ eval(transform(code, { presets: ['es2015', 'react'] }).code) }</div>, document.getElementById('foo'));
-      // return this.cachedCode = 
+      return this.cachedCode = <div className="foobar">{ eval(transform(code, { presets: ['es2015', 'react'] }).code) }</div>;
     } catch(err) {
-      alert('foo');
       return this.cachedCode;
     }
   }
@@ -88,10 +86,11 @@ class TextareaDemo extends React.Component {
    * @method demo
    */
   get demo() {
-    this.getCode();
     return (
       <div>
+        { this.getCode() }
         <Textarea
+          className="bar"
           onChange={ this.action.bind(this, 'value') }
           rows="15"
           value={ this.value('value') || this.code }
