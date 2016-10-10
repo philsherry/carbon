@@ -1,6 +1,7 @@
 import React from 'react';
 import Pod from 'components/pod';
 import Maps from 'components/maps';
+import Marker from 'components/maps/marker';
 
 class Homepage extends React.Component {
   /**
@@ -14,7 +15,10 @@ class Homepage extends React.Component {
           center='Newcastle'
           className='myMap'
           mapId='foo'
-        />
+        >
+          <Marker title='foo' position='Jesmond UK' />
+          <Marker title='foo' position='Durham UK' />
+        </Maps>
       </Pod>
     );
   }

@@ -3,7 +3,15 @@ import classNames from 'classnames';
 
 class Maps extends React.Component {
 
+  // Move to helper?
   geocoder = new google.maps.Geocoder();
+
+  geocodeLocation = (location, callback) => {
+    this.geocoder.geocode({ address: location }, callback);
+  }
+  // -------
+
+
   map;
 
   static defaultProps = {
@@ -17,7 +25,7 @@ class Maps extends React.Component {
   }
 
   componentDidMount() {
-    this.geocodeLocation((results, status) => {
+    this.geocodeLocation(this.props.center, (results, status) => {
       if (status === google.maps.GeocoderStatus.OK) {
         this.map = new google.maps.Map(document.getElementById(this.props.mapId), {
           center: results[0].geometry.location,
@@ -26,22 +34,35 @@ class Maps extends React.Component {
         });
       }
     });
+    this.setMarkers();
   }
 
   componentDidUpdate() {
-    this.geocodeLocation((results, status) => {
+    this.geocodeLocation(this.props.center, (results, status) => {
       if (status === google.maps.GeocoderStatus.OK) {
         this.map.setCenter(results[0].geometry.location);
       }
     });
   }
 
-  get mainClasses() {
-    return classNames('carbon-maps', this.props.className);
+  setMarkers() {
+    if (!this.props.children) { return; }
+
+    this.props.children.forEach((marker) => {
+      this.geocodeLocation(marker.props.position, (results, status) => {
+        if (status === google.maps.GeocoderStatus.OK) {
+          new google.maps.Marker({
+            position: results[0].geometry.location,
+            map: this.map,
+            title: marker.props.title
+          });
+        }
+      });
+    });
   }
 
-  geocodeLocation = (callback) => {
-    this.geocoder.geocode({ address: this.props.center }, callback);
+  get mainClasses() {
+    return classNames('carbon-maps', this.props.className);
   }
 
   render() {
