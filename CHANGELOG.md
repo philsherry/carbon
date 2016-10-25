@@ -1,5 +1,9 @@
 # 0.28.0
 
+## Helpers
+
+* `abbreviateNumber` function is provided for adding 'k' and 'm' style abbreviations for large numbers
+
 ## Component Enhancements
 
 * `Icon`: new Icons added - Draft, Github, Twitter & Dribble

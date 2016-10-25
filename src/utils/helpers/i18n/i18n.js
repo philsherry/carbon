@@ -43,6 +43,32 @@ const I18nHelper = {
     });
   },
 
+  abbreviateCurrency: (num, options = {}) => {
+    let locale = options.locale || 'en',
+        sign = num < 0 ? '-' : '',
+        abbr = I18nHelper.abbreviateNumber(num),
+        format = I18nHelper.format(locale);
+    return format.format.replace("%u", format.unit).replace("%n", abbr).replace("%s", sign);
+  },
+
+  /**
+   * Abbreviates number with a `k` or `m` suffix depening on whether it's a thousand or a million
+   * billions and above abbreviate with millions
+   *
+   * @method abbreviateNumber
+   * @param {Number} number
+   * @return {String} abbreviated number
+   */
+  abbreviateNumber: (num) => {
+    if (num > 949 && num < 999950) {
+      return `${Math.round(num / 100) / 10}${I18n.t("number.format.abbreviations.thousand", { defaultValue: "k" })}`;
+    } else if (num > 999949) {
+      return `${Math.round(num / 100000) / 10}${I18n.t("number.format.abbreviations.million", { defaultValue: "m" })}`;
+    }
+
+    return `${I18nHelper.formatDecimal(num)}`;
+  },
+
   /**
    * Adds currency formatting to the value
    *
