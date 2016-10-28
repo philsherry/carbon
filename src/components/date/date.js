@@ -382,7 +382,6 @@ class Date extends React.Component {
         navDateFormat={ 'MMMM YYYY' }
         arrows={ { prev: '‹', next: '›' } }
         theme={ null }
-        focusYearView={ true }
       />
     </MonthView>
   }
