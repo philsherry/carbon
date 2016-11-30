@@ -19,6 +19,8 @@ import Mobile from './svgs/mobile';
 import PDF from './svgs/pdf';
 import Paperclip from './svgs/paperclip';
 import Payment from './svgs/payment';
+import PersonAdd from './svgs/person-add';
+import PersonRemove from './svgs/person-remove';
 import Phone from './svgs/phone';
 import Plus from './svgs/plus';
 import Print from './svgs/print';
@@ -57,6 +59,8 @@ export default {
   paperclip: Paperclip,
   payment: Payment,
   phone: Phone,
+  'person-add': PersonAdd,
+  'person-remove': PersonRemove,
   plus: Plus,
   print: Print,
   processing: Processing,

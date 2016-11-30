@@ -28,6 +28,8 @@ describe('Icon', () => {
     'pdf',
     'paperclip',
     'payment',
+    'person-add',
+    'person-remove',
     'phone',
     'plus',
     'print',
