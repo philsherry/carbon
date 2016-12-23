@@ -1,16 +1,33 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 import Icon from './../icon';
 
 class Detail extends React.Component {
+
   static propTypes = {
+    /**
+     * Children elements
+     *
+     * @property children
+     * @type {Node}
+     */
+    children: PropTypes.node,
+
+    /**
+     * Custom className
+     *
+     * @property className
+     * @type {String}
+     */
+    className: PropTypes.string,
+
     /**
      * The type of icon to use.
      *
      * @property icon
      * @type {Object}
      */
-    icon: React.PropTypes.string,
+    icon: PropTypes.string,
 
     /**
      * A small detail to display under the main content.
@@ -18,7 +35,30 @@ class Detail extends React.Component {
      * @property footnote
      * @type {String}
      */
-    footnote: React.PropTypes.string
+    footnote: PropTypes.string
+  }
+
+  constructor(...args) {
+    super(...args);
+    this.classes = this.classes.bind(this);
+  }
+
+  /**
+   * @method render
+   * @return {Object} JSX
+   */
+  render() {
+    return (
+      <div className={ this.classes() }>
+        { this.icon() }
+
+        <div className='carbon-detail__content'>
+          { this.props.children }
+        </div>
+
+        { this.footnote() }
+      </div>
+    );
   }
 
   /**
@@ -27,11 +67,11 @@ class Detail extends React.Component {
    * @method classes
    * @return {String}
    */
-  get classes() {
+  classes() {
     return classNames(
-      "carbon-detail",
+      'carbon-detail',
       this.props.className, {
-        "carbon-detail--has-icon": this.props.icon
+        'carbon-detail--has-icon': this.props.icon
       }
     );
   }
@@ -46,7 +86,7 @@ class Detail extends React.Component {
     if (!this.props.icon) { return null; }
 
     return (
-      <Icon className="carbon-detail__icon" type={ this.props.icon } />
+      <Icon className='carbon-detail__icon' type={ this.props.icon } />
     );
   }
 
@@ -60,26 +100,8 @@ class Detail extends React.Component {
     if (!this.props.footnote) { return null; }
 
     return (
-      <div className="carbon-detail__footnote">
+      <div className='carbon-detail__footnote'>
         { this.props.footnote }
-      </div>
-    );
-  }
-
-  /**
-   * @method render
-   * @return {Object} JSX
-   */
-  render() {
-    return (
-      <div className={ this.classes }>
-        { this.icon() }
-
-        <div className="carbon-detail__content">
-          { this.props.children }
-        </div>
-
-        { this.footnote() }
       </div>
     );
   }
