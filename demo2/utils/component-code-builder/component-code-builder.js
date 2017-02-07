@@ -13,7 +13,7 @@ class ComponentCodeBuilder {
     this.name = name;
 
     // start building the code
-    this.code = `<${name}`;
+    this.code = `<Frame><${name}`;
 
     // by default we do not have any props
     this.hasProps = false;
@@ -103,7 +103,7 @@ class ComponentCodeBuilder {
     if (this.isClosed) { return; }
 
     if (this.hasChildren) {
-      this.code += `\n</${this.name}>`;
+      this.code += `\n</${this.name}></Frame>`;
     } else if (this.hasProps) {
       this.code += "\n/>";
     } else {
@@ -116,12 +116,14 @@ class ComponentCodeBuilder {
   // returns the code
   toString = () => {
     if (!this.isClosed) { this.close(); }
+    console.log(this.code);
 
     return this.code;
   }
 
   // returns component
   toComponent = () => {
+    debugger
     return eval(transform(this.toString(), { presets: ['es2015', 'react'] }).code);
   }
 }

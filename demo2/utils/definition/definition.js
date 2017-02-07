@@ -3,11 +3,13 @@ import { classify } from 'underscore.string';
 import inputDefinition from './input-definition';
 import modalDefinition from './modal-definition';
 import ComponentActions from './../../actions/component';
+import Frame from './../../components/frame';
 
 class Definition {
   constructor(name, component, data) {
     // expose component to the window for live coding
     global[classify(name)] = component;
+    global['Frame'] = Frame
 
     this.key = kebabCase(name);
 
