@@ -79,14 +79,20 @@ const itemTarget = {
 
 class LineItem extends React.Component {
   updateValue = (ev) => {
-    InvoicingActions.updateValue(
-      this.props.index,
-      ev.target.name,
-      MultiCurrency.toBaseCurrency(
+    let value = ev.target.value;
+
+    if (ev.target.name === "rate" || ev.target.name === "discount") {
+      value = MultiCurrency.toBaseCurrency(
         this.props.foreignCurrency,
         ev.target.value,
         this.props.exchangeRate
-      ),
+      )
+    }
+
+    InvoicingActions.updateValue(
+      this.props.index,
+      ev.target.name,
+      value,
       this.props.id
     );
   }
