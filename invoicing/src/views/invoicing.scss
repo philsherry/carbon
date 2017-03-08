@@ -1,0 +1,11 @@
+@import 'colors';
+
+.carbon-icon,
+.carbon-link__icon {
+  color: $grey-dark-blue-40;
+  cursor: pointer;
+}
+
+.dragging .carbon-table-cell {
+  background-color: $blue-sky-20;
+}
