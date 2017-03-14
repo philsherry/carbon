@@ -398,6 +398,8 @@ class Form extends React.Component {
     if (valid && this.props.onSubmit) {
       this.props.onSubmit(ev);
     }
+
+    this.state.warningCount = 1;
   }
 
   /**
