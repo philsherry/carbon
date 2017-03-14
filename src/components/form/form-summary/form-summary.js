@@ -55,10 +55,10 @@ const translateKey = (props, key) => {
 };
 
 const translation = (props, key) => {
-  let location = `errors.messages.form_summary.${key}`,
-      defaultTranslation = defaultTranslations(props.errors,props.warnings)[key];
-
   key = translateKey(props, key);
+
+  let defaultTranslation = defaultTranslations(props.errors,props.warnings)[key],
+      location = `errors.messages.form_summary.${key}`;
 
   return I18n.t(location, defaultTranslation);
 };
