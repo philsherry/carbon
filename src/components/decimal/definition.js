@@ -9,7 +9,7 @@ let definition = new Definition('decimal', Decimal, {
     precision: "String || Number"
   },
   propValues: {
-    precision: 21
+    precision: 19
   },
   propDescriptions: {
     align: "Sets the alignment of the text within the decimal component",
