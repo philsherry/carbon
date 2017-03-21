@@ -5,12 +5,28 @@
 * `Decimal`: fix issue where `visibleValue` was not updated after a change to `precision`.
 * `Form`: adds error and warning icons (and refactors the summary into its own sub-component)
 * `TableHeader`: fix overflow issue so that tooltip / help components aren't cut off.
+# 0.35.0
+
+## Component Enchancements
+
+* `Date` now shows error validation when an invalid date is entered.
+* `Flash`: Change error icon to match other notifications (now shows error icon when `as` prop is `error`)
+* `Form`: adds error and warning icons (and refactors the summary into its own sub-component)
+
+## New Validations
+
+* DateWithinRangeValidator checks that a date is within specified bounds.
+e.g.
+```javascript
+  new DateWithinRangeValidator({ limit: 30, units: 'days' }
+```
 
 # 0.34.4
 
 ## Bug fix
 
 * `Pod`: corrects misalignment caused by centering
+
 
 # 0.34.3
 
