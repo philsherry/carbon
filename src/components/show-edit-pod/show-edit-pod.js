@@ -241,6 +241,7 @@ class ShowEditPod extends React.Component {
       <Form
         afterFormValidation={ this.onSaveEditForm }
         beforeFormValidation={ this.beforeFormValidation }
+        buttonAlign={ this.props.buttonAlign }
         cancel={ this.props.cancel }
         cancelText={ this.props.cancelText }
         onCancel={ this.onCancelEditForm }
