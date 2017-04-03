@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { tagComponent } from '../../utils/helpers/tags';
+import { tagComponent } from '../../../utils/helpers/tags';
 
 /**
  * Renders a menu block for inside of a submenu.

@@ -1,7 +1,6 @@
 import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 import MenuListItem from './menu-list-item';
-import { tagComponent } from '../../utils/helpers/tags';
 import { shallow } from 'enzyme';
 
 describe('MenuListItem', () => {

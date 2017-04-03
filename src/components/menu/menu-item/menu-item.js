@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import Link from './../../link';
 import { assign } from 'lodash';
-import { tagComponent } from '../../utils/helpers/tags';
+import { tagComponent } from '../../../utils/helpers/tags';
 
 /**
  * Renders a menu item for the menu component.
