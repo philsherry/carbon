@@ -63,7 +63,7 @@ describe('Textbox', () => {
     });
   });
 
-  describe('on component', () => {
+  describe('tags on component', () => {
     let wrapper = shallow(
       <Textbox
         value={ 'foo' }
@@ -74,7 +74,7 @@ describe('Textbox', () => {
       />
     );
 
-    it('includes correct component, element and role data tags', () => {
+    it('include correct component, element and role data tags', () => {
       rootTagTest(wrapper, 'textbox', 'bar', 'baz');
     });
   });

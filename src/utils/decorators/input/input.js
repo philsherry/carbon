@@ -202,13 +202,11 @@ let Input = (ComposedComponent) => class Component extends ComposedComponent {
     // Pass onPaste action to input element
     inputProps.onPaste = this.props.onPaste;
 
-
     // Adds data tag for automation
     inputProps["data-element"] = "input";
 
     // Remove data-role as this should be applied on the top level element
     delete inputProps["data-role"];
-
 
     return inputProps;
   }
