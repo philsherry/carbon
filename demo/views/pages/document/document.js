@@ -1,12 +1,12 @@
 import React from 'react';
-import { connect } from 'utils/flux';
+import { connect } from './../../../../src/utils/flux';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import DocumentStore from './../../../stores/document';
 import DocumentActions from './../../../actions/document';
 import marked from 'marked';
 import InformationStyles from '../../common/information-styles';
-import Spinner from 'components/spinner';
-import Row from 'components/row';
+import Spinner from './../../../../src/components/spinner';
+import Row from './../../../../src/components/row';
 import Highlight from 'react-highlight';
 import classNames from 'classnames';
 

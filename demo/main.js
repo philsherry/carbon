@@ -1,8 +1,10 @@
 import React from 'react';
-import 'utils/css';
+import './../src/utils/css';
 import { Route } from 'react-router';
-import { startRouter } from 'utils/router';
+import { startRouter } from './../src/utils/router';
+import ReactDOM from 'react-dom';
 import { enableMock } from './xhr-mock';
+import Button from './../src/components/button';
 
 // Languages
 import './i18n/en';
@@ -19,7 +21,7 @@ import SiteMap from './site-map';
 import Highcharts from 'highcharts';
 global.Highcharts = Highcharts;
 
-// global.imagePath = 'https://assets.na.sageone.com/carbon/demo/latest/assets/images';
+global.imagePath = 'https://assets.na.sageone.com/carbon/demo/latest/assets/images';
 global.imagePath = '/assets/images';
 
 enableMock();

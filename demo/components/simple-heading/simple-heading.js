@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Link from 'components/link';
+import Link from './../../../src/components/link';
 
 /**
  * Simple heading at h2 level with optional github link

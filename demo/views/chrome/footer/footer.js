@@ -2,8 +2,8 @@ import React, { PropTypes } from 'react';
 import I18n from 'i18n-js';
 
 // Carbon
-import Icon from 'components/icon';
-import Link from 'components/link';
+import Icon from './../../../../src/components/icon';
+import Link from './../../../../src/components/link';
 
 // Demo
 import Wrapper from './../../common/wrapper';

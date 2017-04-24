@@ -1,12 +1,12 @@
 import React from 'react';
 import { includes, startCase } from 'lodash';
-import ImmutableHelper from 'utils/helpers/immutable';
+import ImmutableHelper from './../../../../../../src/utils/helpers/immutable';
 import ComponentStore from './../../../../../stores/component';
 import ComponentActions from './../../../../../actions/component';
-import Checkbox from 'components/checkbox';
-import DropdownFilter from 'components/dropdown-filter';
-import Textarea from 'components/textarea';
-import Textbox from 'components/textbox';
+import Checkbox from './../../../../../../src/components/checkbox';
+import DropdownFilter from './../../../../../../src/components/dropdown-filter';
+import Textarea from './../../../../../../src/components/textarea';
+import Textbox from './../../../../../../src/components/textbox';
 
 export default props => (
   <form className='demo-component-preview__controls'>

@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import escapeStringRegexp from 'escape-string-regexp';
 import React, { PropTypes } from 'react';
 
-import Link from 'components/link';
-import Textbox from 'components/textbox';
+import Link from './../../components/link';
+import Textbox from './../../components/textbox';
 
 import MenuListItem from './menu-list-item';
 
