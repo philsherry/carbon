@@ -62,8 +62,13 @@ module.exports = {
       }
     ]
   },
+
   plugins: [
     // Output css to a named file
     new ExtractTextPlugin("ui.css")
-  ]
+  ],
+
+  devServer: {
+    historyApiFallback: true
+  }
 }
