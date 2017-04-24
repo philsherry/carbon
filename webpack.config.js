@@ -15,7 +15,7 @@ module.exports = {
   },
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -27,7 +27,7 @@ module.exports = {
         use: [ "parcelify-loader" ],
         include: [
           __dirname + "/src",
-          // __dirname + "/demo"
+          __dirname + "/demo"
         ]
       },
       {
@@ -46,7 +46,16 @@ module.exports = {
       // },
       {
         test: /\.scss$/,
-        loaders: ["style-loader", "css-loader", "sass-loader"]
+        use: [{
+          loader: "style-loader",
+        },{
+          loader: "css-loader",
+        },{
+          loader: "sass-loader",
+          options: {
+            includePaths: [__dirname + "/src/style-config"]
+          }
+        }],
       }
     ]
   },

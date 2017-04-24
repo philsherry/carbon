@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from './../../../../src/components/button';
-import Icon from './../../../../src/components/icon';
+import Button from 'components/button';
+import Icon from 'components/icon';
 
 import DemoActions from '../../../actions/demo';
 
