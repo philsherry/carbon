@@ -1,5 +1,6 @@
-module.exports = {
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
+module.exports = {
   context: __dirname + "",
   entry: {
     javascript: "./demo/main.js"
@@ -46,17 +47,22 @@ module.exports = {
       // },
       {
         test: /\.scss$/,
-        use: [{
-          loader: "style-loader",
-        },{
-          loader: "css-loader",
-        },{
-          loader: "sass-loader",
-          options: {
-            includePaths: [__dirname + "/src/style-config"]
-          }
-        }],
+        loader: ExtractTextPlugin.extract({
+          use: [{
+            loader: "css-loader"
+          },{
+            loader: "sass-loader",
+            options: {
+              includePaths: [__dirname + "/src/style-config"]
+            }
+          }],
+          fallback: 'style-loader'
+        })
       }
     ]
   },
+  plugins: [
+    // Output css to a named file
+    new ExtractTextPlugin("ui.css")
+  ]
 }
