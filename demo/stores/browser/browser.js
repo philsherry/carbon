@@ -1,9 +1,9 @@
 import Dispatcher from './../../dispatcher';
-import Store from './../../../src/utils/flux/store';
-import Browser from './../../../src/utils/helpers/browser';
+import Store from 'utils/flux/store';
+import Browser from 'utils/helpers/browser';
 import BrowserActions from './../../actions/browser';
 import BrowserConstants from './../../constants/browser';
-import ImmutableHelper from './../../../src/utils/helpers/immutable';
+import ImmutableHelper from 'utils/helpers/immutable';
 import { merge } from 'lodash';
 
 let browserData = merge({}, global.BROWSER_DATA, {

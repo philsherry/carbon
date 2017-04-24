@@ -10,6 +10,10 @@ module.exports = {
     path: __dirname + "/dist",
   },
 
+  resolve: {
+    modules: ['node_modules', 'src', 'demo']
+  },
+
   module: {
     loaders: [
       {
@@ -21,7 +25,10 @@ module.exports = {
         test: /\.js$/,
         enforce: "pre",
         use: [ "parcelify-loader" ],
-        include: __dirname + "/src"
+        include: [
+          __dirname + "/src",
+          // __dirname + "/demo"
+        ]
       },
       {
         test: /\.js$/,

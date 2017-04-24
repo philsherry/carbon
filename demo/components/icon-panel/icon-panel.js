@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Icon from './../../../src/components/icon';
+import Icon from 'components/icon';
 
 /**
  * Puts out a div with icon related presentation

@@ -1,7 +1,7 @@
 import React from 'react';
 import SiteMap from './../../../site-map';
-import Link from './../../../../src/components/link';
-import { MenuListItem, MenuList } from './../../../../src/components/menu-list';
+import Link from 'components/link';
+import { MenuListItem, MenuList } from 'components/menu-list';
 import { humanize, titleize } from 'underscore.string';
 import { startsWith } from 'lodash';
 

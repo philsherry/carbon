@@ -1,7 +1,7 @@
 import Dispatcher from './../../dispatcher';
 import ComponentConstants from '../../constants/component';
 import Request from 'superagent';
-import serialize from './../../../src/utils/helpers/serialize';
+import serialize from 'utils/helpers/serialize';
 
 const ComponentActions = {
   /**

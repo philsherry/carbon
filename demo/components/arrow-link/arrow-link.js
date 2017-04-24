@@ -2,8 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import { humanize } from 'underscore.string';
 
-import Icon from './../../../src/components/icon';
-import Link from './../../../src/components/link';
+import Icon from 'components/icon';
+import Link from 'components/link';
 
 /**
  * Creates a Link wrapped HTML component that renders a label with prefix and an arrow icon

@@ -1,6 +1,6 @@
 // React
 import React from 'react';
-import ImmutableHelper from './../../../../src/utils/helpers/immutable';
+import ImmutableHelper from 'utils/helpers/immutable';
 import I18n from 'i18n-js';
 
 // App Components
@@ -10,7 +10,7 @@ import ComponentPreview from './component-preview';
 import ComponentAPI from './component-api';
 
 // Flux Components
-import { connect } from './../../../../src/utils/flux';
+import { connect } from 'utils/flux';
 import ComponentActions from '../../../actions/component';
 import ComponentStore from '../../../stores/component';
 

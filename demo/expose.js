@@ -7,6 +7,6 @@ global['ImmutableHelper'] = require('./../src/utils/helpers/immutable').default;
 global['Dispatcher'] = require('./dispatcher').default;
 global['ComponentConstants'] = require('./constants/component').default;
 global['Request'] = require('superagent');
-global['serialize'] = require('./../src/utils/helpers/serialize').default;
+global['serialize'] = require('utils/helpers/serialize').default;
 global['Row'] = require('./../src/components/row').default;
 global['PresenceValidation'] = require('./../src/utils/validations/presence').default;

@@ -5,13 +5,13 @@ import I18n from 'i18n-js';
 import DemoActions from './../../../actions/demo';
 
 // Carbon
-import Link from './../../../../src/components/link';
-import { Sidebar, SidebarHeader } from './../../../../src/components/sidebar';
+import Link from 'components/link';
+import { Sidebar, SidebarHeader } from 'components/sidebar';
 
 // Demo Site
 import SiteMap from './../../../site-map';
 import GetCodeButtons from './../../../components/get-code-buttons';
-import { MenuList } from './../../../../src/components/menu-list';
+import { MenuList } from 'components/menu-list';
 
 class Menu extends React.Component {
   render() {

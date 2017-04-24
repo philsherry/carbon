@@ -1,5 +1,5 @@
 import ComponentActions from './../../../actions/component';
-import OptionsHelper from './../../../../src/utils/helpers/options-helper';
+import OptionsHelper from 'utils/helpers/options-helper';
 import { assign } from 'lodash';
 
 export default (definition) => {

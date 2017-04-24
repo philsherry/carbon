@@ -1,7 +1,7 @@
 import React from 'react';
 import PageContentArea from './../../../common/page-content-area';
-import Icon from './../../../../../src/components/icon';
-import { Table, TableRow, TableCell, TableHeader } from './../../../../../src/components/table';
+import Icon from 'components/icon';
+import { Table, TableRow, TableCell, TableHeader } from 'components/table';
 
 class ComponentAPI extends React.Component {
   render() {

@@ -4,7 +4,7 @@ import { Route } from 'react-router';
 import { startRouter } from './../src/utils/router';
 import ReactDOM from 'react-dom';
 import { enableMock } from './xhr-mock';
-import Button from './../src/components/button';
+import Button from 'components/button';
 
 // Languages
 import './i18n/en';

@@ -1,7 +1,7 @@
 // Carbon
 import Dispatcher from '../../dispatcher';
-import Store from './../../../src/utils/flux/store';
-import ImmutableHelper from './../../../src/utils/helpers/immutable';
+import Store from 'utils/flux/store';
+import ImmutableHelper from 'utils/helpers/immutable';
 
 // Flux
 import ComponentActions from './../../actions/component';

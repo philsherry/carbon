@@ -1,9 +1,9 @@
-import css from './../../../src/utils/css';
+import css from 'utils/css';
 import React from 'react';
 
 // Carbon
-import Pod from './../../../src/components/pod';
-import Portrait from './../../../src/components/portrait';
+import Pod from 'components/pod';
+import Portrait from 'components/portrait';
 
 class InfoTile extends React.Component {
   render() {

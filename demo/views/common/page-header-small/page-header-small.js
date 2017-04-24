@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Pill from './../../../../src/components/pill';
+import Pill from 'components/pill';
 
 import Wrapper from './../wrapper';
 
