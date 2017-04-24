@@ -9,6 +9,7 @@ module.exports = {
   output: {
     filename: "ui.js",
     path: __dirname + "/dist",
+    publicPath: "/dist"
   },
 
   resolve: {
