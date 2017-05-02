@@ -13,6 +13,7 @@ describe('TableAjax', () => {
 
     instance = TestUtils.renderIntoDocument(
       <TableAjax
+        actions={ { foo:{}, bar:{} } }
         className="foo"
         path='/test'
         onChange={ spy }
@@ -23,6 +24,7 @@ describe('TableAjax', () => {
 
     customInstance = TestUtils.renderIntoDocument(
       <TableAjax
+        actions={ { foo:{}, bar:{} } }
         className="foo"
         path='/test'
         onChange={ spy }
@@ -35,6 +37,7 @@ describe('TableAjax', () => {
 
     pageSizeInstance = TestUtils.renderIntoDocument(
       <TableAjax
+        actions={ { foo:{}, bar:{} } }
         className="foo"
         path='/test'
         onChange={ spy }
