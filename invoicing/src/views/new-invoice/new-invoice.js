@@ -1,6 +1,8 @@
 import React from 'react';
 import Heading from './heading';
 import Details from './details';
+import LineItems from './line-items';
+import Terms from './terms';
 
 import Pod from 'carbon/lib/components/pod';
 
@@ -11,13 +13,13 @@ class NewInvoice extends React.Component {
         <Heading />
         <Details />
 
-        <div>
-          <Pod>Table</Pod>
-        </div>
+        <Pod>
+          <LineItems />
+        </Pod>
 
-        <div>
-          <Pod>T&C</Pod>
-        </div>
+        <Pod>
+          <Terms />
+        </Pod>
       </div>
     );
   }

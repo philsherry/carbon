@@ -21,7 +21,6 @@
     "marked": "~0.3.6",
     "moment": "~2.15.1",
     "prop-types": "~15.5.8",
-    "react-date-picker": "~5.3.28",
     "superagent": "~2.2.0"
   },
   "devDependencies": {

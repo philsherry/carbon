@@ -10,6 +10,6 @@ export default (props) => {
       <InvoiceDetails />
       <AddressDetails />
     </Row>
-  )
+  );
 };
 

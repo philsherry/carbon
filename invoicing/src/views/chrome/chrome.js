@@ -6,6 +6,7 @@ export default props => {
   return (
     <div>
       <NavBar
+        className='navigation-bar'
         as='secondary'
       />
       <AppWrapper>
