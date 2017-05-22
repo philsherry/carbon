@@ -1,10 +1,9 @@
 import React from 'react';
 import 'utils/css';
+import { Route } from 'react-router';
 import { startRouter } from 'utils/router';
-import { Route, Switch } from 'react-router-dom';
+import { Switch } from 'react-router';
 import { enableMock } from './xhr-mock';
-
-import Document from './views/pages/document';
 
 // Languages
 import './i18n/en';
@@ -28,10 +27,9 @@ enableMock();
 
 const routes = (
   <Chrome>
-    <Route exact path="/" component={ Home } />
-
-    <SubPageChrome>
-    </SubPageChrome>
+    <div>
+      FOOO
+    </div>
   </Chrome>
 );
 

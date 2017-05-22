@@ -1,5 +1,4 @@
 // Globally enable the logger
-let enabled = process.env.NODE_ENV !== 'production';
 
 // Log the message
 const log = (message, type) => {

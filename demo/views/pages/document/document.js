@@ -23,12 +23,12 @@ class Document extends React.Component {
 
   updateContent = () => {
     if (!this.getContent()) {
-      DocumentActions.updateDocument(this.props.route.document);
+      DocumentActions.updateDocument(this.props.document);
     }
   }
 
   getContent = () => {
-    return this.state.documentStore.get(this.props.route.document);
+    return this.state.documentStore.get(this.props.document);
   }
 
   loadingClasses = () => {

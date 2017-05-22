@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { assign } from 'lodash';
 import Icon from './../icon';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { validProps } from '../../utils/ether';
 import Event from './../../utils/helpers/events';
 import { tagComponent } from '../../utils/helpers/tags';

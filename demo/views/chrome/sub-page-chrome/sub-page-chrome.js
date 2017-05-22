@@ -10,6 +10,7 @@ import PageHeaderSmall from './../../common/page-header-small';
 import SubPageNavigation from './../../common/sub-page-navigation';
 
 import Wrapper from './../../common/wrapper';
+import BrowserHelper from 'utils/helpers/browser';
 
 /**
  * wraps the sub-pages in some further chrome items
@@ -36,7 +37,7 @@ class SubPageComponent extends React.Component {
 
           <SubPageNavigation
             availableRoutes={ this.props.routes }
-            currentLocation={ this.props.location }
+            currentLocation={ this._location() }
             definition={ definition }
           />
         </Wrapper>
@@ -53,7 +54,7 @@ class SubPageComponent extends React.Component {
     if (definition) {
       return definition.get('description');
     } else {
-      let scope = this.props.location.pathname.replace(/\//g, ".").substr(1);
+      let scope = this._location().pathname.replace(/\//g, ".").substr(1);
       return I18n.t(`${scope}.subtitle`, { defaultValue: '' });
     }
   }
@@ -71,12 +72,16 @@ class SubPageComponent extends React.Component {
   }
 
   _getLastPartOfLocation = () => {
-    let parts = this.props.location.pathname.split("/");
+    let parts = this._location().pathname.split("/");
     return parts[parts.length - 1];
   }
 
   _hasNameParam = () => {
     return this.props.params && this.props.params.name;
+  }
+
+  _location = () => {
+    return BrowserHelper.getDocument().location;
   }
 }
 

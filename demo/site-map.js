@@ -19,38 +19,4 @@ export default new SiteMapHelper({
       "a-basic-example-of-flux":     `${guidesPath}/a-basic-example.md`
     }
   },
-  "/components/:name": {
-    component: Component,
-    items:     Object.keys(Definitions),
-    filter:    true
-  },
-  "/style": {
-    items: {
-      colors: {
-        component: Colors
-      },
-      icons: {
-        component: Icons
-      }
-    }
-  },
-  "/guides": {
-    items: {
-      "flux":                   `${guidesPath}/flux.md`,
-      "immutable":              `${guidesPath}/immutable.md`,
-      "validations":            `${guidesPath}/validations.md`,
-      "assets":                 `${guidesPath}/assets.md`,
-      "decorators":             `${guidesPath}/decorators.md`,
-      "handlers":               `${guidesPath}/handlers.md`,
-      "retrieving-data":        `${guidesPath}/retrieving-data.md`,
-      "integrating-other-code": `${guidesPath}/integrating-with-other-ui.md`,
-    }
-  },
-  "/tutorials": {
-    items: {
-      "rails-part-1:-hello-world":      `${tutorialsPath}/carbon-rails/hello-world.md`,
-      "rails-part-2:-introducing-data": `${tutorialsPath}/carbon-rails/introducing-data.md`,
-      "rails-part-2:-updating-data":    `${tutorialsPath}/carbon-rails/updating-data.md`
-    }
-  },
 });
