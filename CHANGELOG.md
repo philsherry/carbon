@@ -16,6 +16,8 @@ The following component have had minor internal changes to satisfy the introduct
 
 * ActionToolbar
 * Confirm
+* Date
+* DateRange
 * Dialog
 * DialogFullScreen
 * Flash
